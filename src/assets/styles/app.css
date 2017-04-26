@@ -1,0 +1,12 @@
+body:before {
+  background: rgba(0, 0, 0, 0);
+}
+
+body {
+  -webkit-user-select: none;
+}
+
+.header-navbar {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px
+}
