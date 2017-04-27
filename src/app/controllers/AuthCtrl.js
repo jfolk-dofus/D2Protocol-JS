@@ -1,7 +1,7 @@
 angular.module('Alpha.auth.controllers', [])
     .controller('AuthCtrl', function ($rootScope) {
 
-        $scope.close = function () {
+        $rootScope.close = function () {
             remote.getCurrentWindow().close();
         };
     });

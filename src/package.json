@@ -8,8 +8,5 @@
   },
   "devDependencies": {
     "electron": "~1.6.2"
-  },
-  "dependencies": {
-    "angular-ui-router" : "0.2.18"
   }
 }
