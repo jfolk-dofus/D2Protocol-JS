@@ -27,7 +27,7 @@ angular.module('Alpha', [
             templateUrl: "app/views/auth/login.html",
         });
 
-    $urlRouterProvider.otherwise('/auth/login');
+    $urlRouterProvider.otherwise('/app/dashboard');
     //$locationProvider.html5Mode(true);
 });
 
