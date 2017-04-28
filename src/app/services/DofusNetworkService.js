@@ -1,5 +1,4 @@
-angular.module('Alpha.app.services', [])
-    .service('DofusNetworkService', function () {// Singleton (prochainement généré à partir des sources dofus (des messages))
+angular.service('DofusNetworkService', function () {// Singleton (prochainement généré à partir des sources dofus (des messages))
 
         var service;
 

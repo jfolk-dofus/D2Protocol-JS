@@ -1,5 +1,4 @@
-angular.module('Alpha.app.services', [])
-    .service('BotManager', function () {
+angular.service('BotManager', function () {
         this.createBot = function() {
             var bot = {
                 account: {

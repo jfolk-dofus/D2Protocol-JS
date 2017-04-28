@@ -1,5 +1,4 @@
-angular.module('Alpha.app.controllers', [])
-    .controller('DashboardCtrl', function ($rootScope) {
+angular.controller('DashboardCtrl', function ($rootScope) {
 
     
     });

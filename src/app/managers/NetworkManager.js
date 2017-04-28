@@ -1,6 +1,7 @@
-angular.module('Alpha.app.managers', [])
-    .service('NetworkManager', function () {
+angular.service('NetworkManager', function () {
         this.createMITMServer = function() {
 
         };
+
+        return this;
     });

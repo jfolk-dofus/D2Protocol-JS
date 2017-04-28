@@ -1,13 +1,14 @@
-angular.module('Alpha', [
-    'ui.router',
-    'Alpha.app.controllers',
-    'Alpha.auth.controllers'
-])
-.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+
+
+var angular = angular.module('Alpha', [
+    'ui.router'
+]);
+
+angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $stateProvider
         .state('app', {
             url: "/app",
-            abstract: true,
+            //abstract: true,
             templateUrl: "app/views/app/layout.html",
             controller: 'AppCtrl'
         })
@@ -31,3 +32,11 @@ angular.module('Alpha', [
     //$locationProvider.html5Mode(true);
 });
 
+require("./app/controllers/AppCtrl.js");
+require("./app/controllers/AuthCtrl.js");
+require("./app/controllers/DashboardCtrl.js");
+require("./app/services/DofusNetworkService.js");
+require("./app/network/NetworkMessage.js");
+require("./app/protocol/ProtocolMessage.js");
+require("./app/managers/BotManager.js");
+require("./app/managers/NetworkManager.js");
