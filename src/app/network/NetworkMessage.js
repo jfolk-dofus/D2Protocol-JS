@@ -1,7 +1,9 @@
-var NetworkMessage = new class { //c'est quoi le niveau d'accès comme ça ? aucune idée poto, c'est les fonctionnalités ACME 6 ou jsp. starf ptdrr, j'vais faire du mieux que je peux, mais le code de w0dm3n est assez intéressant à ce niveau là
+var BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
+var BIT_MASK = 3;
+
+var NetworkMessage = class { //c'est quoi le niveau d'accès comme ça ? aucune idée poto, c'est les fonctionnalités ACME 6 ou jsp. starf ptdrr, j'vais faire du mieux que je peux, mais le code de w0dm3n est assez intéressant à ce niveau là
     // merci w0dm3n
-    static BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
-    static BIT_MASK = 3;
+    static 
 
     writePacket(param1, param2, param3) {
         var _loc5_ = 0;
@@ -42,7 +44,7 @@ var NetworkMessage = new class { //c'est quoi le niveau d'accès comme ça ? auc
         }
 
         subComputeStaticHeader(param1, param2) {
-            return param1 << NetworkMessage.BIT_RIGHT_SHIFT_LEN_PACKET_ID | param2;
+            return param1 << BIT_RIGHT_SHIFT_LEN_PACKET_ID | param2;
         }
 
         getPacketLength(buffer, len) {
