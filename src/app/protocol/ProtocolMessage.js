@@ -3,7 +3,7 @@ var ProtocolMessage = class {
         this.messageId = messageId;
         this.buffer = new IO.CustomDataWrapper();
     }
-}
+};
 
 var ProtocolRequiredMessage = class extends ProtocolMessage {
     constructor(requiredVersion, currentVersion) {
@@ -16,4 +16,4 @@ var ProtocolRequiredMessage = class extends ProtocolMessage {
         this.buffer.writeInt(this.requiredVersion);
         this.buffer.writeInt(this.currentVersion);
     }
-}
+};
