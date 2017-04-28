@@ -35,6 +35,16 @@ angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider) 
 
     $urlRouterProvider.otherwise('/app/dashboard');
     //$locationProvider.html5Mode(true);
+}).directive('showtab',
+function () {
+    return {
+        link: function (scope, element, attrs) {
+            element.click(function(e) {
+                e.preventDefault();
+                $(element).tab('show');
+            });
+        }
+    };
 });
 
 require("./app/controllers/AppCtrl.js");
