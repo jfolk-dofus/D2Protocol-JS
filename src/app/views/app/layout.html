@@ -20,49 +20,36 @@
     <div class="dashboard">
         <div class="sidebar">
             <div class="scrollable scrollbar-macosx">
-            <div class="sidebar__cont">
-                <div class="sidebar__menu">
-                <div class="sidebar__title">Menu</div>
-                <ul class="nav nav-menu">
-                    <li><a href="index.html">
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-tachometer"></i></div>
-                        <div class="nav-menu__text"><span>Dashboard</span></div></a></li>
-                    <li><a href="index.html">
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-cube"></i></div>
-                        <div class="nav-menu__text"><span>Products</span></div></a></li>
-                    <li><a href="index.html">
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-envelope"></i></div>
-                        <div class="nav-menu__text"><span>Mailbox</span></div>
-                        <div class="nav-menu__right"><i class="fa fa-fw fa-angle-right arrow"></i></div></a>
-                    <ul class="nav nav-menu__second collapse">
-                        <li><a href="inbox.html">Inbox</a></li>
-                        <li><a href="sent.html">Sent</a></li>
-                        <li><a href="compose.html">Compose</a></li>
-                    </ul>
-                    </li>
-                    <li><a href="index.html">
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-truck"></i></div>
-                        <div class="nav-menu__text"><span>Orders</span></div>
-                        <div class="nav-menu__right"><i class="badge badge-default">2</i></div></a></li>
-                    <li><a href="index.html">
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-user"></i></div>
-                        <div class="nav-menu__text"><span>Users</span></div></a></li>
-                    <li ><a href="#"><!--class="active opened"-->
-                        <div class="nav-menu__ico"><i class="fa fa-fw fa-folder-o"></i></div>
-                        <div class="nav-menu__text"><span>Other</span></div>
-                        <div class="nav-menu__right"><i class="fa fa-fw fa-angle-right arrow"></i></div></a>
-                    <ul class="nav nav-menu__second collapse in">
-                        <li class="active"><a href="blank.html">Blank</a></li>
-                        <li><a href="login.html">Login</a></li>
-                    </ul>
-                    </li>
-                </ul>
+                <div class="sidebar__cont">
+                    <div class="sidebar__menu">
+                        <div class="sidebar__title">Menu</div>
+                        <ul class="nav nav-menu">
+                            <li ui-sref-active="active"><a ui-sref="app.dashboard" ui-sref-active="active opened">
+                                <div class="nav-menu__ico"><i class="fa fa-fw fa-tachometer"></i></div>
+                                <div class="nav-menu__text"><span>Dashboard</span></div></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="sidebar__cont">
+                    <div class="sidebar__menu">
+                        <div class="sidebar__title">Bots</div>
+                        <ul class="nav nav-menu">
+                            <li ng-repeat="(index, bot) in bots"  ui-sref-active="active opened"><a ui-sref="app.bot({ id: index })" >
+                                <div class="nav-menu__ico"><i class="fa fa-fw fa-user"></i></div>
+                                <div class="nav-menu__text"><span>{{bot.account.username}}</span></div></a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
-        <div ui-view class="main">
+        <div class="main">
+          <div class="main__scroll scrollbar-macosx">
+            <div class="main__cont" ui-view>
 
+            </div>
+          </div>
         </div>
     </div>
 </div>

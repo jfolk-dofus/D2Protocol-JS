@@ -17,6 +17,11 @@ angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider) 
             templateUrl: "app/views/app/dashboard.html",
             controller: "DashboardCtrl"
         })
+        .state('app.bot', {
+            url: "/bot/:id",
+            templateUrl: "app/views/app/bot.html",
+            controller: "BotCtrl"
+        })
         .state('auth', {
             url: "/auth",
             abstract: true,
@@ -33,6 +38,7 @@ angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider) 
 });
 
 require("./app/controllers/AppCtrl.js");
+require("./app/controllers/BotCtrl.js");
 require("./app/controllers/AuthCtrl.js");
 require("./app/controllers/DashboardCtrl.js");
 require("./app/services/DofusNetworkService.js");

@@ -10,4 +10,5 @@ angular.controller('AppCtrl', function ($rootScope, BotManager, NetworkManager) 
         var mitm_server = NetworkManager.createMITMServer();
         var bot = BotManager.createBot(); // bypass
         BotManager.startBot(bot); // tu peux tout commit pdt que je vois la suite
+        $rootScope.bots = BotManager.bots; // add watcher to this
     });

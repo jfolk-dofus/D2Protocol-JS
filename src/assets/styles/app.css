@@ -10,3 +10,8 @@ body {
   border-top-left-radius: 0px;
   border-top-right-radius: 0px
 }
+
+.main-heading .main-title {
+    padding-right: 0px;
+    margin-right: 0px;
+}

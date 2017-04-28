@@ -1,4 +1,6 @@
 angular.service('BotManager', function () {
+        this.bots = [];
+
         this.createBot = function() {
             var bot = {
                 account: {
@@ -24,5 +26,6 @@ angular.service('BotManager', function () {
                     break;
             }
             // att je réfléchis
+            this.bots.push(bot);
         }
     });
