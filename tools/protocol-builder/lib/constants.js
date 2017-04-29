@@ -1,11 +1,11 @@
 module.exports = {
   src: {
-    enum: '/dofus/network/enums',
-    type: '/dofus/network/types',
-    message: '/dofus/network/messages',
-    metadata: '/dofus/network/Metadata.as',
-    protocolConstants: '/dofus/network/ProtocolConstantsEnum.as',
-    customDataWrapper: '/jerakine/network/CustomDataWrapper.as',
+    enum: '/com/ankamagames/dofus/network/enums',
+    type: '/com/ankamagames/dofus/network/types',
+    message: '/com/ankamagames/dofus/network/messages',
+    metadata: '/com/ankamagames/dofus/network/Metadata.as',
+    protocolConstants: '/com/ankamagames/dofus/network/ProtocolConstantsEnum.as',
+    customDataWrapper: '/com/ankamagames/jerakine/network/CustomDataWrapper.as',
     protocolTypeManager: '/templates/protocol-type-manager.tpl',
     enumManager: '/templates/enum-manager.tpl',
     messageReceiver: '/templates/message-receiver.tpl',
