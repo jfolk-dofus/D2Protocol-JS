@@ -1,12 +1,22 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "alpha",
+  "version": "0.0.1",
+  "description": "AI for Dofus game",
   "main": "main.js",
   "scripts": {
     "start": "electron  ."
   },
   "devDependencies": {
     "electron": "~1.6.2"
+  },
+  "dependencies": {
+    "babel-cli": "^6.18.0",
+    "base64-js": "^1.2.0",
+    "node-dijkstra": "^2.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gmardon/Alpha-bot"
   }
+
 }

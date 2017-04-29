@@ -1,4 +1,6 @@
-angular.service('BotManager', function () {
+var ClientSocket = require('../network/ClientSocket.js').ClientSocket;
+
+angular.service('BotManager', function (NetworkManager) {
         this.bots = [];
 
         this.createBot = function() {
@@ -7,8 +9,12 @@ angular.service('BotManager', function () {
                     username: "test",
                     password: "test"
                 },
-                connection_mode: "MITM"
+                connection_mode: "FULL_SOCKET"
             };
+            Events(bot);
+            bot.on("receive_message", function(data) {
+                console.log("receive message");
+            });
             return bot;
         };
 
@@ -19,10 +25,10 @@ angular.service('BotManager', function () {
             // in parallel, create a full socket mode
             switch (bot.connection_mode) {
                 case "MITM":
-
                     break;
 
                 case "FULL_SOCKET":
+                    bot.socket = new ClientSocket(bot);
                     break;
             }
             // att je réfléchis

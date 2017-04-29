@@ -7,7 +7,6 @@ angular.controller('AppCtrl', function ($rootScope, BotManager, NetworkManager) 
 
         // en gros, le $scope c'est la variable qui sers pour le contexte du controller et de la page (la page html)/
         // je vais te montrer
-        var mitm_server = NetworkManager.createMITMServer();
         var bot = BotManager.createBot(); // bypass
         BotManager.startBot(bot); // tu peux tout commit pdt que je vois la suite
         $rootScope.bots = BotManager.bots; // add watcher to this

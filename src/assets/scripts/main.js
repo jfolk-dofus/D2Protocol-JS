@@ -116,3 +116,47 @@ $(document).ready(function() {
 		});
 	}
 });
+
+function toArrayBuffer(buf) {
+    var ab = new ArrayBuffer(buf.length);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buf.length; ++i) {
+        view[i] = buf[i];
+    }
+    return ab;
+}
+
+(function(root) {
+    var isArrayBufferSupported = (new Buffer(new Uint8Array([1]).buffer)[0] === 1);
+
+    var arrayBufferToBuffer = isArrayBufferSupported ? arrayBufferToBufferAsArgument : arrayBufferToBufferCycle;
+
+    function arrayBufferToBufferAsArgument(ab) {
+        return new Buffer(ab);
+    }
+
+    function arrayBufferToBufferCycle(ab) {
+        var buffer = new Buffer(ab.byteLength);
+        var view = new Uint8Array(ab);
+        for (var i = 0; i < buffer.length; ++i) {
+            buffer[i] = view[i];
+        }
+        return buffer;
+    }
+
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = arrayBufferToBuffer;
+        }
+        exports.arrayBufferToBuffer = arrayBufferToBuffer;
+    } else if (typeof define === 'function' && define.amd) {
+        define([], function() {
+            return arrayBufferToBuffer;
+        });
+    } else {
+        root.arrayBufferToBuffer = arrayBufferToBuffer;
+    }
+
+})(this);
+
+function Events(n){var t={},e=[];n=n||this,n.on=function(n,e,l){(t[n]=t[n]||[]).push([e,l])},n.off=function(n,l){n||(t={});for(var i=t[n]||e,c=i.length=l?i.length:0;c--;)l==i[c][0]&&i.splice(c,1)},n.emit=function(n){for(var l,i=t[n]||e,c=i.length>0?i.slice(0,i.length):i,f=0;l=c[f++];)l[0].apply(l[1],e.slice.call(arguments,1))}}

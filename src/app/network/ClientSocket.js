@@ -1,37 +1,48 @@
-var ClientSocket = class {
-    constructor(socket) {
-        this.socket = socket;
-        this.receive();
-        this.send(new Messages.ProtocolRequiredMessage(Common.DOFUS_PROTOCOL_ID, Common.DOFUS_PROTOCOL_ID));
-        this.send(new Messages.HelloConnectMessage("ivu9wh58^kQQw*8n:jud11Kw(bHY9m3V", 303));
+var net = require('net');
+var CustomDataWrapper = require("../io/custom_data_wrapper.js").CustomDataWrapper;
+var NetworkMessage = require("./NetworkMessage").NetworkMessage;
+var arrayBufferToBuffer = require('arraybuffer-to-buffer');
+
+class ClientSocket {
+    constructor(bot) {
+        this.bot = bot;
+        console.log("ctor");
+        this.socket = new net.Socket();
+        this.register();
+      //  this.send(new Messages.ProtocolRequiredMessage(Common.DOFUS_PROTOCOL_ID, Common.DOFUS_PROTOCOL_ID));
+      //  this.send(new Messages.HelloConnectMessage("ivu9wh58^kQQw*8n:jud11Kw(bHY9m3V", 303));
     }
 
     close() {
         this.socket.end();
     }
 
-    receive() {
+    register() {
         var self = this;
         this.socket.on('data', function(data){
             try {
-                var buffer = new IO.CustomDataWrapper(Formatter.toArrayBuffer(data));
+                var buffer = new CustomDataWrapper(toArrayBuffer(data));
                 while(buffer.bytesAvailable > 0) {
                     self.processPart(buffer);
                 }
             }
             catch (ex) {
-                Logger.error("Can't parse properly packet client");
+                console.log(ex);
+                console.log("Can't parse properly packet client");
             }
         });
 
         this.socket.on('end', function(data){
             try {
-                Auth.removeClient(self);
-                Logger.infos("Client disconnected");
+                console.log("Client disconnected");
             }
             catch (ex) {
-                Logger.error("Can't disconnect properly client");
+                console.log("Can't disconnect properly client");
             }
+        });
+
+        this.socket.connect(5555, '213.248.126.39', function() {
+            console.log('Connected');
         });
     }
 
@@ -42,18 +53,24 @@ var ClientSocket = class {
         var messageId = header >> 2;
         var typeLen = header & 3;
         var messageLen = NetworkMessage.getPacketLength(buffer, typeLen);
-        Logger.network("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
+        console.log("typeLen: " + typeLen);
+        console.log("MessageLen: " + messageLen);
+        console.log("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;
         messagePart = b.slice(buffer.position, buffer.position + messageLen);
-        Processor.handle(self, messageId, new IO.CustomDataWrapper(Formatter.toArrayBuffer(messagePart)));
+        //this.bot.emit("receive_message", messageId, new CustomDataWrapper(toArrayBuffer(messagePart)));
         buffer.position = buffer.position + messageLen;
+    }
+
+    processPacket(id, buffer) {
+
     }
 
     send(packet) {
         try {
             packet.serialize();
-            var messageBuffer = new IO.CustomDataWrapper(new ByteArray());
+            var messageBuffer = new CustomDataWrapper(new ByteArray());
             var offset = NetworkMessage.writePacket(messageBuffer, packet.messageId, packet.buffer._data);
             var b = arrayBufferToBuffer(messageBuffer.data.buffer);
             if(offset == undefined) {
@@ -61,11 +78,11 @@ var ClientSocket = class {
             }
             var finalBuffer = b.slice(0, packet.buffer._data.write_position + offset);
             this.socket.write(finalBuffer);
-
-            Logger.network("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
+            console.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
         }
         catch (ex) {
-            Logger.error("Can't send properly packet client");
+            console.log("Can't send properly packet client");
         }
     }
-}
+};
+module.exports.ClientSocket = ClientSocket;

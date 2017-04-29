@@ -1,11 +1,10 @@
 var BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
 var BIT_MASK = 3;
 
-var NetworkMessage = class { //c'est quoi le niveau d'accès comme ça ? aucune idée poto, c'est les fonctionnalités ACME 6 ou jsp. starf ptdrr, j'vais faire du mieux que je peux, mais le code de w0dm3n est assez intéressant à ce niveau là
+class NetworkMessage { //c'est quoi le niveau d'accès comme ça ? aucune idée poto, c'est les fonctionnalités ACME 6 ou jsp. starf ptdrr, j'vais faire du mieux que je peux, mais le code de w0dm3n est assez intéressant à ce niveau là
     // merci w0dm3n
-    static 
 
-    writePacket(param1, param2, param3) {
+    static writePacket(param1, param2, param3) {
         var _loc5_ = 0;
         var _loc6_ = 0;
         var _loc4_ = this.computeTypeLen(param3.write_position);
@@ -30,43 +29,48 @@ var NetworkMessage = class { //c'est quoi le niveau d'accès comme ça ? aucune 
         param1.writeBytes(param3);
         return offset;
     }
-    computeTypeLen(param1) {
-            if (param1 > 65535) {
-                return 3;
-            }
-            if (param1 > 255) {
-                return 2;
-            }
-            if (param1 > 0) {
-                return 1;
-            }
-            return 0;
+
+    static computeTypeLen(param1) {
+        if (param1 > 65535) {
+            return 3;
         }
-
-        subComputeStaticHeader(param1, param2) {
-            return param1 << BIT_RIGHT_SHIFT_LEN_PACKET_ID | param2;
+        if (param1 > 255) {
+            return 2;
         }
-
-        getPacketLength(buffer, len) {
-            var packetLen = 0;
-            switch (len)
-            {
-                case 1:
-                    packetLen = buffer.readByte();
-                    break;
-
-                case 2:
-                    packetLen = buffer.readByte();
-                    break;
-
-                case 3:
-                    packetLen = ((buffer.readByte() & 255) << 16) + ((buffer.readByte() & 255) << 8) + (buffer.readByte() & 255);
-                    break;
-
-                default:
-                    packetLen = 0;
-                    break;
-            }
-            return packetLen;
+        if (param1 > 0) {
+            return 1;
         }
-    };
+        return 0;
+    }
+
+    static subComputeStaticHeader(param1, param2) {
+        return param1 << BIT_RIGHT_SHIFT_LEN_PACKET_ID | param2;
+    }
+
+    static getPacketLength(buffer, len) {
+        var packetLen = 0;
+        switch (len) {
+            case 1:
+                packetLen = buffer.readByte();
+                break;
+
+            case 2:
+                packetLen = buffer.readByte();
+                break;
+
+            case 3:
+                packetLen = ((buffer.readByte() & 255) << 16) + ((buffer.readByte() & 255) << 8) + (buffer.readByte() & 255);
+                break;
+
+            default:
+                packetLen = 0;
+                break;
+        }
+        return packetLen;
+    }
+}
+;
+
+module.exports = {
+    NetworkMessage: NetworkMessage
+}
