@@ -97,13 +97,15 @@ function formatEnumConstant (c) {
 }
 
 function formatSuperImport (asClass) {
-  if(asClass.super === 'Object'){
+  if(asClass.super === 'Object' || typeof asClass.super === 'undefined'){
     return '';
   }
+
   if(asClass.super === 'NetworkMessage'){
     return 'require(\'util\').inherits(' + asClass.class + ', ' + 'd2com.NetworkMessage.class);';
   }
   var imp = _.findWhere(asClass.imports, {class: asClass.super});
+
 
   var depPath = (imp ? resolveDependencyPath(asClass.namespace, imp.namespace) : './') + resolveFilename(asClass.super) + '.js';
   return 'require(\'util\').inherits(' + asClass.class + ', ' + 'require(\''+ depPath + '\').' + asClass.super + ');';
