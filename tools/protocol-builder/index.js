@@ -11,6 +11,6 @@ program
 
 if(!program.output || !program.src) {
     program.outputHelp();
+    return;
 }
-
 d2builder(program.src, program.output);

@@ -102,7 +102,7 @@ function formatSuperImport (asClass) {
   }
 
   if(asClass.super === 'NetworkMessage'){
-    return 'require(\'util\').inherits(' + asClass.class + ', ' + 'd2com.NetworkMessage.class);';
+    return 'var NetworkManager = require(\'NetworkManager\').NetworkManager;';
   }
   var imp = _.findWhere(asClass.imports, {class: asClass.super});
 
