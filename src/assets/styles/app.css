@@ -31,4 +31,13 @@ body {
 
 .main__cont {
     height: 100%;
+    width: 100%;
+}
+
+.tab-content>.active {
+    padding: 15px 15px 5px;
+}
+
+textarea.console {
+    height: 100%;
 }

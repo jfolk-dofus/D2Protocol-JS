@@ -1,37 +1,39 @@
-<div class="main-heading">
-    <div class="main-title">
-        <ol class="breadcrumb">
-        <li><a>Alpha</a></li>
-        <li>Bot</li>
-        <li>{{bot.account.username}}</li>
-        </ol>
+<div class="main__cont" style="display: table;">
+    <div class="main-heading">
+        <div class="main-title">
+            <ol class="breadcrumb">
+            <li><a>Alpha</a></li>
+            <li>Bot</li>
+            <li>{{bot.account.username}}</li>
+            </ol>
+        </div>
     </div>
-</div>
-<ul class="nav nav-tabs" role="tablist">
-    <li class="active" role="presentation"><a data-target="#console" data-toggle="tab"> Console</a></li>
-    <li role="presentation"><a data-target="#player" aria-controls="player" role="tab" data-toggle="tab"><i class="fa fa-user"></i> Player</a></li>
-    <li role="presentation"><a data-target="#inventory" data-toggle="tab"><i class="fa fa-suitcase"></i> Inventory</a></li>
-    <li role="presentation"><a data-target="#map" data-toggle="tab"><i class="fa fa-map-o"></i> Map</a></li>
-    <li role="presentation"><a data-target="#fight" data-toggle="tab"><i class="fa fa-plus"></i> Fight</a></li>
-    <li role="presentation"><a data-target="#options"data-toggle="tab"><i class="fa fa-gear"></i> Options</a></li>
-</ul>
-<div class="tab-content">
-    <div class="tab-pane active" id="console" role="tabpanel">
-        <textarea class="form-control" placeholder=""></textarea>
-    </div>
-    <div class="tab-pane" id="player" role="tabpanel">
-        player
-    </div>
-    <div class="tab-pane" id="inventory" role="tabpanel">
-        inventory
-    </div>
-    <div class="tab-pane" id="map" role="tabpanel">
-        map
-    </div>
-    <div class="tab-pane" id="fight" role="tabpanel">
-        fight
-    </div>
-    <div class="tab-pane" id="options" role="tabpanel">
-        options
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active" role="presentation"><a data-target="#console" data-toggle="tab"> Console</a></li>
+        <li role="presentation"><a data-target="#player" aria-controls="player" role="tab" data-toggle="tab"><i class="fa fa-user"></i> Player</a></li>
+        <li role="presentation"><a data-target="#inventory" data-toggle="tab"><i class="fa fa-suitcase"></i> Inventory</a></li>
+        <li role="presentation"><a data-target="#map" data-toggle="tab"><i class="fa fa-map-o"></i> Map</a></li>
+        <li role="presentation"><a data-target="#fight" data-toggle="tab"><i class="fa fa-plus"></i> Fight</a></li>
+        <li role="presentation"><a data-target="#options"data-toggle="tab"><i class="fa fa-gear"></i> Options</a></li>
+    </ul>
+    <div class="tab-content" style="display: table-row;">
+        <div class="tab-pane active" id="console" role="tabpanel">
+            <textarea class="console form-control" placeholder=""></textarea>
+        </div>
+        <div class="tab-pane" id="player" role="tabpanel">
+            player
+        </div>
+        <div class="tab-pane" id="inventory" role="tabpanel">
+            inventory
+        </div>
+        <div class="tab-pane" id="map" role="tabpanel">
+            map
+        </div>
+        <div class="tab-pane" id="fight" role="tabpanel">
+            fight
+        </div>
+        <div class="tab-pane" id="options" role="tabpanel">
+            options
+        </div>
     </div>
 </div>
