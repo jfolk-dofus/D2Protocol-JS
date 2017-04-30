@@ -57,7 +57,7 @@ class ClientSocket {
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;
         messagePart = b.slice(buffer.position, buffer.position + messageLen);
-        //this.bot.emit("receive_message", messageId, new CustomDataWrapper(toArrayBuffer(messagePart)));
+        this.bot.emit("receive_message", messageId, new CustomDataWrapper(toArrayBuffer(messagePart)));
         buffer.position = buffer.position + messageLen;
     }
 
