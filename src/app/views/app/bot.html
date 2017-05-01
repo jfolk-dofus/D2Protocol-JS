@@ -1,11 +1,8 @@
 <div class="main__cont" style="display: table;">
     <div class="main-heading">
         <div class="main-title">
-            <ol class="breadcrumb">
-            <li><a>Alpha</a></li>
-            <li>Bot</li>
-            <li>{{bot.account.username}}</li>
-            </ol>
+            <button ng-if="!bot.isConnected" ng-click="botConnect(bot)" class="btn btn-default" type="button">Connect to server</button>
+            <button ng-if="bot.isConnected" ng-click="botDisconnect(bot)" class="btn btn-default" type="button">Disconnect</button>
         </div>
     </div>
     <ul class="nav nav-tabs" role="tablist">
