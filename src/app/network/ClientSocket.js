@@ -1,7 +1,8 @@
 var net = require('net');
 var CustomDataWrapper = require("../io/custom_data_wrapper.js").CustomDataWrapper;
-var NetworkMessage = require("./NetworkMessage").NetworkMessage;
+var NetworkMessage = require("./NetworkMessage");
 var arrayBufferToBuffer = require('arraybuffer-to-buffer');
+var Processor = require("./Processor");
 
 class ClientSocket {
     constructor(bot) {
@@ -55,12 +56,8 @@ class ClientSocket {
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;
         messagePart = b.slice(buffer.position, buffer.position + messageLen);
-        this.bot.emit("receive_message", messageId, new CustomDataWrapper(toArrayBuffer(messagePart)));
+        Processor.handle(this.bot, messageId, new CustomDataWrapper(toArrayBuffer(messagePart)));
         buffer.position = buffer.position + messageLen;
-    }
-
-    processPacket(id, buffer) {
-
     }
 
     send(packet) {
@@ -81,4 +78,5 @@ class ClientSocket {
         }
     }
 };
+
 module.exports = ClientSocket;

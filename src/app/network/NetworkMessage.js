@@ -1,7 +1,7 @@
 var BIT_RIGHT_SHIFT_LEN_PACKET_ID = 2;
 var BIT_MASK = 3;
 
-class NetworkMessage { //c'est quoi le niveau d'accès comme ça ? aucune idée poto, c'est les fonctionnalités ACME 6 ou jsp. starf ptdrr, j'vais faire du mieux que je peux, mais le code de w0dm3n est assez intéressant à ce niveau là
+class NetworkMessage {
     // merci w0dm3n
 
     static writePacket(param1, param2, param3) {
@@ -71,6 +71,4 @@ class NetworkMessage { //c'est quoi le niveau d'accès comme ça ? aucune idée 
 }
 ;
 
-module.exports = {
-    NetworkMessage: NetworkMessage
-}
+module.exports = NetworkMessage;
