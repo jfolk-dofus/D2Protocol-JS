@@ -9,11 +9,14 @@ angular.service('BotManager', function (NetworkManager) {
                     username: "test",
                     password: "test"
                 },
-                connection_mode: "FULL_SOCKET"
+                connection_mode: "FULL_SOCKET",
+                log: function(text) {
+                    bot.emit("log_info", text);
+                }
             };
-            Events(bot);
+            Events(bot); // wrap bot into event interface
             bot.on("receive_message", function(data) {
-                console.log("receive message");
+                //bot.log_info("receive message");
             });
             return bot;
         };

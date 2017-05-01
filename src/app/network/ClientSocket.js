@@ -9,8 +9,6 @@ class ClientSocket {
         console.log("ctor");
         this.socket = new net.Socket();
         this.register();
-      //  this.send(new Messages.ProtocolRequiredMessage(Common.DOFUS_PROTOCOL_ID, Common.DOFUS_PROTOCOL_ID));
-      //  this.send(new Messages.HelloConnectMessage("ivu9wh58^kQQw*8n:jud11Kw(bHY9m3V", 303));
     }
 
     close() {
@@ -28,16 +26,16 @@ class ClientSocket {
             }
             catch (ex) {
                 console.log(ex);
-                console.log("Can't parse properly packet client");
+                this.bot.log("Can't parse properly packet client");
             }
         });
 
         this.socket.on('end', function(data){
             try {
-                console.log("Client disconnected");
+                this.bot.log("Client disconnected");
             }
             catch (ex) {
-                console.log("Can't disconnect properly client");
+                this.bot.log("Can't disconnect properly client");
             }
         });
 
@@ -53,9 +51,9 @@ class ClientSocket {
         var messageId = header >> 2;
         var typeLen = header & 3;
         var messageLen = NetworkMessage.getPacketLength(buffer, typeLen);
-        console.log("typeLen: " + typeLen);
-        console.log("MessageLen: " + messageLen);
-        console.log("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
+        this.bot.log("typeLen: " + typeLen);
+        this.bot.log("MessageLen: " + messageLen);
+        this.bot.log("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;
         messagePart = b.slice(buffer.position, buffer.position + messageLen);
@@ -78,10 +76,10 @@ class ClientSocket {
             }
             var finalBuffer = b.slice(0, packet.buffer._data.write_position + offset);
             this.socket.write(finalBuffer);
-            console.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
+            this.bot.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
         }
         catch (ex) {
-            console.log("Can't send properly packet client");
+            this.bot.log("Can't send properly packet client");
         }
     }
 };
