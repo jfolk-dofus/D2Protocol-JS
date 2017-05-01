@@ -9,4 +9,10 @@ angular.controller('BotCtrl', function ($scope, $rootScope, BotManager, $statePa
             $scope.bot.off("log_info");
         });
         $scope.console_text = "";
+        $scope.botConnect = function() {
+            $scope.bot.connect();
+        };
+        $scope.botDisconnect = function() {
+            $scope.bot.disconnect();
+        };
     });

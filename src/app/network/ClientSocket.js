@@ -6,7 +6,6 @@ var arrayBufferToBuffer = require('arraybuffer-to-buffer');
 class ClientSocket {
     constructor(bot) {
         this.bot = bot;
-        console.log("ctor");
         this.socket = new net.Socket();
         this.register();
     }
@@ -40,7 +39,8 @@ class ClientSocket {
         });
 
         this.socket.connect(5555, '213.248.126.39', function() {
-            console.log('Connected');
+            self.bot.log("Bot is now connected to server !");
+            self.bot.is_connected = true;
         });
     }
 
@@ -83,4 +83,4 @@ class ClientSocket {
         }
     }
 };
-module.exports.ClientSocket = ClientSocket;
+module.exports = ClientSocket;
