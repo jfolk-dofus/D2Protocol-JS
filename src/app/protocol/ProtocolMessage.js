@@ -41,19 +41,46 @@ class HelloConnectMessage extends ProtocolMessage {
     }
 
     deserialize(buffer) {
-        console.log(buffer);
         this.salt = buffer.readUTF();
         var length = buffer.readVarInt();
-        // this.key = buffer.slice(buffer.position, buffer.position + length); // FIX THIS, READ KEY AS BUFFER
+        this.key = new Uint8Array(length);
+        for (var i = 0 ; i < length ; i++) {
+            this.key[i] = buffer.readByte();
+        }
     }
+}
+
+class IdentificationMessage extends ProtocolMessage {
+
+    constructor() {
+        super(4);
+    }
+
+    deserialize(buffer) {
+        var flag1 = buffer.readByte();
+        this.autoconnect = IO.BooleanByteWrapper.getFlag(flag1, 0);
+        this.useCertificate = IO.BooleanByteWrapper.getFlag(flag1, 1);
+        this.useLoginToken = IO.BooleanByteWrapper.getFlag(flag1, 2);
+        this.version = new Types.VersionExtended();
+        this.version.deserialize(buffer);
+        this.lang = buffer.readUTF();
+        var len1 = buffer.readVarUhShort();
+        this.credentials = buffer.readUTF();
+        this.password = buffer.readUTF();
+        this.serverId = buffer.readShort();
+    }
+
+    // TODO do serialize
 }
 
 module.exports = {
     ProtocolMessage: ProtocolMessage,
     ProtocolRequiredMessage: ProtocolRequiredMessage,
     HelloConnectMessage: HelloConnectMessage,
+    IdentificationMessage: IdentificationMessage,
     withId: {
         1: ProtocolRequiredMessage,
-        3: HelloConnectMessage
+        3: HelloConnectMessage,
+        4: IdentificationMessage
     }
 }
