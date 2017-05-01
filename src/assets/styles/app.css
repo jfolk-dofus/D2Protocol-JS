@@ -42,3 +42,11 @@ textarea.console {
     height: 100%;
     resize: none;
 }
+
+.navbar-header {
+    float: left;
+}
+
+.navbar-nar {
+    margin: 0;
+}

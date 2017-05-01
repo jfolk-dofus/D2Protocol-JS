@@ -1,21 +1,20 @@
 <div class="wrapper">
-    <nav class="navbar navbar-static-top header-navbar">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">
-            <div class="logo text-nowrap">
-                <div class="logo__img"></div><span class="logo__text">Alpha</span>
-            </div>
-        </a>
-    </div>
-    <div class="topnavbar">
-        <ul class="nav navbar-nav navbar-left" style="-webkit-app-region: drag"> 
-        </ul>
-        <ul style="-webkit-app-region: no-drag;" class="userbar nav navbar-nav">
-        <li class="dropdown">
-            <a class="userbar__settings" ng-click="close();"><i class="fa fa-power-off"></i></a>
-        </li>
-        </ul>
-    </div>
+    <nav class="navbar navbar-static-top header-navbar" style="-webkit-app-region: drag">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">
+                <div class="logo text-nowrap">
+                    <div class="logo__img"></div>
+                    <span class="logo__text">Alpha</span>
+                </div>
+            </a>
+        </div>
+        <div class="topnavbar" style="-webkit-app-region: drag">
+            <ul style="-webkit-app-region: no-drag;" class="userbar nav navbar-nav">
+                <li>
+                    <a class="userbar__settings" ng-click="close();"><i class="fa fa-power-off"></i></a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <div class="dashboard">
         <div class="sidebar">
@@ -26,7 +25,8 @@
                         <ul class="nav nav-menu">
                             <li ui-sref-active="active"><a ui-sref="app.dashboard" ui-sref-active="active opened">
                                 <div class="nav-menu__ico"><i class="fa fa-fw fa-tachometer"></i></div>
-                                <div class="nav-menu__text"><span>Dashboard</span></div></a>
+                                <div class="nav-menu__text"><span>Dashboard</span></div>
+                            </a>
                             </li>
                         </ul>
                     </div>
@@ -35,9 +35,11 @@
                     <div class="sidebar__menu">
                         <div class="sidebar__title">Bots</div>
                         <ul class="nav nav-menu">
-                            <li ng-repeat="(index, bot) in bots"  ui-sref-active="active opened"><a ui-sref="app.bot({ id: index })" >
+                            <li ng-repeat="(index, bot) in bots" ui-sref-active="active opened"><a
+                                    ui-sref="app.bot({ id: index })">
                                 <div class="nav-menu__ico"><i class="fa fa-fw fa-user"></i></div>
-                                <div class="nav-menu__text"><span>{{bot.account.username}}</span></div></a>
+                                <div class="nav-menu__text"><span>{{bot.account.username}}</span></div>
+                            </a>
                             </li>
                         </ul>
                     </div>
@@ -45,9 +47,9 @@
             </div>
         </div>
         <div class="main">
-          <div class="main__scroll scrollbar-macosx" ui-view>
+            <div class="main__scroll scrollbar-macosx" ui-view>
 
-          </div>
+            </div>
         </div>
     </div>
 </div>
