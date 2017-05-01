@@ -41,6 +41,9 @@ class Bot {
     on(event_name, event_handler) {
         this.events.on(event_name, event_handler);
     }
+    emit(event_name, ...args) {
+        this.events.emit(event_name, args);
+    }
 }
 
 module.exports = Bot;

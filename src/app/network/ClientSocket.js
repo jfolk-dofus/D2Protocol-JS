@@ -25,16 +25,16 @@ class ClientSocket {
             }
             catch (ex) {
                 console.log(ex);
-                this.bot.log("Can't parse properly packet client");
+                self.bot.log("Can't parse properly packet client");
             }
         });
 
         this.socket.on('end', function(data){
             try {
-                this.bot.log("Client disconnected");
+                self.bot.log("Client disconnected");
             }
             catch (ex) {
-                this.bot.log("Can't disconnect properly client");
+                self.bot.log("Can't disconnect properly client");
             }
         });
 
@@ -51,8 +51,6 @@ class ClientSocket {
         var messageId = header >> 2;
         var typeLen = header & 3;
         var messageLen = NetworkMessage.getPacketLength(buffer, typeLen);
-        this.bot.log("typeLen: " + typeLen);
-        this.bot.log("MessageLen: " + messageLen);
         this.bot.log("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;

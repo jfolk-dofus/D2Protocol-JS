@@ -55,7 +55,7 @@ class NetworkMessage { //c'est quoi le niveau d'accès comme ça ? aucune idée 
                 break;
 
             case 2:
-                packetLen = buffer.readByte();
+                packetLen = buffer.readShort();
                 break;
 
             case 3:
