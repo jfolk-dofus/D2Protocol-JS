@@ -25,7 +25,7 @@ module.exports = function (src, output, strategy) {
     });
     //convert(strategy.enumConverter, path.join(src, constants.src.metadata), path.join(output, constants.output.metadata), null);
     //convert(strategy.enumConverter, path.join(src, constants.src.protocolConstants), path.join(output, constants.output.protocolConstants), null);
-    //convertAll(strategy.enumConverter, path.join(src, constants.src.enum), path.join(output, constants.output.enum), strategy.ext);
+    convertAll(strategy.enumConverter, path.join(src, constants.src.enum), output, strategy.ext);
     //convertAll(strategy.typeConverter, path.join(src, constants.src.type), path.join(output, constants.output.type), strategy.ext);
     convertAll(strategy.messageConverter, path.join(src, constants.src.message), output, strategy.ext);
     //fs.copySync(path.join(__dirname, constants.src.protocolTypeManager), path.join(output, constants.output.protocolTypeManager));
