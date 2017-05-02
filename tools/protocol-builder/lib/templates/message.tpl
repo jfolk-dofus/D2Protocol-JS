@@ -1,17 +1,6 @@
-<typeDeps>
-
-class ProtocolMessage {
-    constructor(messageId) {
-        this.messageId = messageId;
-        this.buffer = new IO.CustomDataWrapper();
-    }
-};
-
-<superDep>
-
-class <classname> extends ProtocolMessage {
-    constructor(requiredVersion, currentVersion) {
-        super(<id>);
+class <classname> extends <heritage> {
+    constructor(<constructor>) {
+        <super>
         <vars>
     }
 
@@ -19,15 +8,7 @@ class <classname> extends ProtocolMessage {
         <serialize>
     }
 
-    deserialize() {
+    deserialize(buffer) {
         <deserialize>
     }
 };
-
-module.exports = {
-    ProtocolMessage: ProtocolMessage,
-    <classname>: <classname>,
-    withId: {
-        <id>: <classname>
-    }
-}
