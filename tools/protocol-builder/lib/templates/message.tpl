@@ -13,3 +13,4 @@ class <classname> extends <heritage> {
     }
 };
 module.exports.<classname> = <classname>;
+module.exports.messages[<id>] = <classname>;
