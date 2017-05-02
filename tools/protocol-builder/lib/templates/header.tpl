@@ -7,7 +7,7 @@ class ProtocolMessage {
         this.buffer = new CustomDataWrapper();
     }
 };
-module.exports.messages = [];
+module.exports.ProtocolMessage = ProtocolMessage;
 
 class ProtocolType {
     constructor(messageId) {
@@ -15,6 +15,7 @@ class ProtocolType {
         this.buffer = new CustomDataWrapper();
     }
 };
+module.exports.ProtocolType = ProtocolType;
 
 module.exports.messages = [];
 module.exports.types = [];
