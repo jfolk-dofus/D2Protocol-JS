@@ -1,36 +1,16 @@
-var <classname> = function () {
-  <vars>
-};
+class <classname> extends <heritage> {
+    constructor(<constructor>) {
+        <super>
+        <vars>
+    }
 
-<superDep>
-  
-module.exports = function () {
-  return new <classname>();
-};
+    serialize() {
+        <serialize>
+    }
 
-<classname>.prototype.serialize = function (output) {
-  this.serializeAs_<classname>(output);
+    deserialize(buffer) {
+        <deserialize>
+    }
 };
-
-<classname>.prototype.deserialize = function (input) {
-  this.deserializeAs_<classname>(input);
-};
-
-<classname>.prototype.serializeAs_<classname> = function (param1) {
-  <serialize>
-};
-
-<classname>.prototype.deserializeAs_<classname> = function (param1) {
-  <deserialize>
-};
-
-<classname>.prototype.getTypeId = function () {
-  return <id>;
-};
-
-<classname>.prototype.getClassName = function () {
-  return '<classname>';
-};
-
-module.exports.id = <id>;
 module.exports.<classname> = <classname>;
+module.exports.types[<id>] = <classname>;

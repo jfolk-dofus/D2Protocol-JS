@@ -4,7 +4,8 @@ var glob = require('glob'),
     path = require('path'),
     fss = require('fs'),
     fs = require('fs-extra'),
-    beautify = require('js-beautify').js_beautify;
+    beautify = require('js-beautify').js_beautify,
+    template = require('./template-manager.js');
 
 var defaultStrategy = require('./strategies/js-strategy.js');
 
@@ -23,10 +24,14 @@ module.exports = function (src, output, strategy) {
         if (err)
             throw err
     });
+    fs.appendFile(output, template('./lib/templates/header.tpl') + "\n\n", { indent_size: 2 }, function (err) {
+        if(err)
+            throw err;
+    });
     //convert(strategy.enumConverter, path.join(src, constants.src.metadata), path.join(output, constants.output.metadata), null);
     //convert(strategy.enumConverter, path.join(src, constants.src.protocolConstants), path.join(output, constants.output.protocolConstants), null);
     convertAll(strategy.enumConverter, path.join(src, constants.src.enum), output, strategy.ext);
-    //convertAll(strategy.typeConverter, path.join(src, constants.src.type), path.join(output, constants.output.type), strategy.ext);
+    convertAll(strategy.typeConverter, path.join(src, constants.src.type), output, strategy.ext);
     convertAll(strategy.messageConverter, path.join(src, constants.src.message), output, strategy.ext);
     //fs.copySync(path.join(__dirname, constants.src.protocolTypeManager), path.join(output, constants.output.protocolTypeManager));
     //fs.copySync(path.join(__dirname, constants.src.messageReceiver), path.join(output, constants.output.messageReceiver));

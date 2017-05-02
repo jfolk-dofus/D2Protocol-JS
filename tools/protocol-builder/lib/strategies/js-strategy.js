@@ -23,17 +23,19 @@ module.exports = {
             { key: 'constructor', value: getConstructorParameters(asClass)},
             { key: 'serialize', value: writeSerialize(asClass) },
             { key: 'deserialize',value: writeDeserialize(asClass)}]), asClass);
-    },
+},
 
-    typeConverter: function (asClass) {
-        var superDep = formatSuperImport(asClass);
-        return template('./lib/templates/type.tpl', [
-            { key: 'id', value: _.findWhere(asClass.constants, {name: 'protocolId'}).value },
-            { key: 'superDep', value: formatSuperImport(asClass) },
+    typeConverter: function (asClass, files) {
+        let id;
+        return trimVerbose(template('./lib/templates/type.tpl', [
+            { key: 'id', value: (id = _.findWhere(asClass.constants, {name: 'protocolId'}).value) },
             { key: 'classname', value: asClass.class },
-            { key: 'vars', value: _.where(asClass.properties, {visibility: 'public'}).map(parseVariable).join('') },
-            { key: 'serialize', value: escapeBody(_.findWhere(asClass.functions, {name: 'serializeAs_' + asClass.class}).body) },
-            { key: 'deserialize', value: escapeBody(_.findWhere(asClass.functions, {name: 'deserializeAs_' + asClass.class}).body)}])
+            { key: 'heritage', value: typeof asClass.super !== 'undefined' ? asClass.super : "ProtocolType"},
+            { key: 'vars', value: assignConstructorValues(asClass, id) },
+            { key: 'super', value: writeSuperConstructor(files, id, asClass, null) },
+            { key: 'constructor', value: getConstructorParameters(asClass)},
+            { key: 'serialize', value: writeSerialize(asClass) },
+            { key: 'deserialize',value: writeDeserialize(asClass)}]), asClass);
     },
 
     ext: 'js'
