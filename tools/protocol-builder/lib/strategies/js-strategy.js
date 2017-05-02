@@ -7,7 +7,8 @@ var asReader = require('../as-reader.js')
 module.exports = {
     enumConverter: function (asClass) {
         return template('./lib/templates/enum.tpl', [
-            {key: 'vars', value: formatEnumConstants(asClass)}
+            {key: 'vars', value: formatEnumConstants(asClass)},
+            {key: 'classname', value: asClass.class}
         ]);
     },
 
