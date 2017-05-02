@@ -53,7 +53,7 @@ require("./app/controllers/AuthCtrl.js");
 require("./app/controllers/DashboardCtrl.js");
 require("./app/network/NetworkMessage.js");
 require("./app/network/ClientSocket.js");
-require("./app/protocol/ProtocolMessage.js");
+require("./app/protocol/Protocol.js");
 require("./app/managers/BotManager.js");
 require("./app/managers/NetworkManager.js");
 require("./app/io/bytearray.js");

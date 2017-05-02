@@ -38,7 +38,7 @@ body {
     padding: 15px 15px;
 }
 
-textarea.console {
+div.console {
     height: 100%;
     resize: none;
 }

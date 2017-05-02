@@ -1,5 +1,5 @@
 var AuthHandler = require("./handlers/AuthHandler");
-var ProtocolMessage = require("../protocol/ProtocolMessage.js");
+var ProtocolMessage = require("../protocol/Protocol.js");
 
 class Processor {
      static handle(bot, messageId, buffer) {
@@ -11,7 +11,7 @@ class Processor {
             handler.handler(bot, packet);
         }
         else {
-         //   ("Handler not found for messageId: " + messageId);
+            bot.error("Handler not found for messageId: " + messageId);
            // client.send(new ProtocolMessage.BasicNoOperationMessage());
         }
     }
@@ -22,8 +22,6 @@ class Processor {
             3: { message: ProtocolMessage.HelloConnectMessage, handler: AuthHandler.handleHelloConnectMessage }
         };
     }
-
-
 }
 
 module.exports = Processor;

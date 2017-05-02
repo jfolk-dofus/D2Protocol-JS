@@ -1,8 +1,8 @@
-angular.controller('BotCtrl', function ($scope, $rootScope, BotManager, $stateParams) {
+angular.controller('BotCtrl', function ($scope, $rootScope, BotManager, $stateParams, $sce) {
         // check id value from $stateParams
         $scope.bot = BotManager.bots[$stateParams.id];
         $scope.bot.on("log_info", function(text) {
-            $scope.console_text += "[INFO] " + text + "\n";
+            $scope.console_text = $sce.trustAsHtml($scope.console_text + "[INFO] " + text + "<br>");
             $scope.$apply();
         });
         $scope.$on("$destroy", function() {

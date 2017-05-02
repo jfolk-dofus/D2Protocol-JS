@@ -68,7 +68,6 @@ class NetworkMessage {
         }
         return packetLen;
     }
-}
-;
+};
 
 module.exports = NetworkMessage;
