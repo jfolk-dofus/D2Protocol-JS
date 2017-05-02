@@ -10,6 +10,14 @@ class Bot {
         this.events.emit("log_info", text);
     }
 
+    err(text) {
+        this.events.emit("log_err", text);
+    }
+
+    debug(text) {
+        this.events.emit("log_debug", text);
+    }
+
     get account() {
         return {
             username: "test",
