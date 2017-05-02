@@ -19,7 +19,7 @@ module.exports = {
             { key: 'classname', value: asClass.class },
             { key: 'heritage', value: asClass.super.replace("NetworkMessage", "ProtocolMessage") },
             { key: 'vars', value: assignConstructorValues(asClass, id) },
-            { key: 'super', value: writeSuperConstructor(files, id, asClass, null)},
+            { key: 'super', value: writeSuperConstructor(files, id, asClass, null) },
             { key: 'constructor', value: getConstructorParameters(asClass)},
             { key: 'serialize', value: writeSerialize(asClass) },
             { key: 'deserialize',value: writeDeserialize(asClass)}]), asClass);
@@ -36,20 +36,8 @@ module.exports = {
             { key: 'deserialize', value: escapeBody(_.findWhere(asClass.functions, {name: 'deserializeAs_' + asClass.class}).body)}])
     },
 
-    ext: 'js',
-
-    resolveFilename: function (filename) {
-        var basename = path.basename(filename, '.as');
-        var str = basename[0].toLowerCase();
-        for (var i = 1; i < basename.length; i++) {
-            var char = basename[i];
-            if (char === char.toUpperCase())
-                str += '-';
-            str += char.toLowerCase();
-        }
-        return str;
-    }
-}
+    ext: 'js'
+};
 
 //replace a private _func by its body
 function format(asClass, data) {
@@ -58,7 +46,7 @@ function format(asClass, data) {
             return x;
         let func = x.split('(')[0].replace('this.', '');
         let body = _.findWhere(asClass.functions, {name: func}).body;
-        return x.replace(new RegExp("this._[A-Za-z1-9_\(\)]+"), body);
+        return format(asClass, x.replace(new RegExp("this._[A-Za-z1-9_\(\)]+"), body));
     }).join(';');
 }
 
