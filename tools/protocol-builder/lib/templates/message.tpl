@@ -12,3 +12,4 @@ class <classname> extends <heritage> {
         <deserialize>
     }
 };
+module.exports.<classname> = <classname>;
