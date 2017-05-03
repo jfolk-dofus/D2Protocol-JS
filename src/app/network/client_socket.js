@@ -3,6 +3,7 @@ var CustomDataWrapper = require("../io/custom_data_wrapper.js").CustomDataWrappe
 var NetworkMessage = require("./network_message");
 var arrayBufferToBuffer = require('arraybuffer-to-buffer');
 var Processor = require("./processor");
+var ByteArray = require("../io/bytearray.js");
 
 class ClientSocket {
     constructor(bot) {
@@ -62,6 +63,7 @@ class ClientSocket {
 
     send(packet) {
         try {
+            console.log(packet);
             packet.serialize();
             var messageBuffer = new CustomDataWrapper(new ByteArray());
             var offset = NetworkMessage.writePacket(messageBuffer, packet.messageId, packet.buffer._data);
@@ -74,6 +76,7 @@ class ClientSocket {
             this.bot.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
         }
         catch (ex) {
+            console.log(ex);
             this.bot.log("Can't send properly packet client");
         }
     }
