@@ -39,11 +39,19 @@ module.exports = function (src, output, strategy) {
     convertAll("ENUM", strategy.enumConverter, path.join(src, constants.src.enum), output, strategy.ext);
     convertAll("TYPE", strategy.typeConverter, path.join(src, constants.src.type), output, strategy.ext);
     convertAll("MESSAGE", strategy.messageConverter, path.join(src, constants.src.message), output, strategy.ext, function() {
+        for (var i = 0; i < future_data.types.length; i++) {
+            if (future_data.types[i] != null)
+                fs.appendFile(output, future_data.types[i] + "\n\n", { indent_size: 2 }, function (err) {
+                    if(err)
+                        throw err;
+                });
+        }
         for (var i = 0; i < future_data.messages.length; i++) {
-            fs.appendFile(output, future_data.messages[i] + "\n\n", { indent_size: 2 }, function (err) {
-                if(err)
-                    throw err;
-            });
+            if (future_data.messages[i] != null)
+                fs.appendFile(output, future_data.messages[i] + "\n\n", { indent_size: 2 }, function (err) {
+                    if(err)
+                        throw err;
+                });
         }
     });
     //fs.copySync(path.join(__dirname, constants.src.protocolTypeManager), path.join(output, constants.output.protocolTypeManager));
