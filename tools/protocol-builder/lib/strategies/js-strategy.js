@@ -23,7 +23,7 @@ module.exports = {
             { key: 'constructor', value: getConstructorParameters(asClass)},
             { key: 'serialize', value: writeSerialize(asClass) },
             { key: 'deserialize',value: writeDeserialize(asClass)}]), asClass);
-},
+        },
 
     typeConverter: function (asClass, files) {
         let id;
@@ -44,12 +44,12 @@ module.exports = {
 //replace a private _func by its body
 function format(asClass, data) {
     return data.split(';').map(x => {
-        if (!x.startsWith('this._'))
+        if (!x.trim().startsWith('this._'))
             return x;
         let func = x.split('(')[0].replace('this.', '');
         let body = _.findWhere(asClass.functions, {name: func}).body;
         return format(asClass, x.replace(new RegExp("this._[A-Za-z1-9_\(\)]+"), body));
-    }).join(';');
+    }).join(';').replace(";;", ";").replace("};", "}");
 }
 
 function getConstructorParameters(asClass) {
@@ -138,25 +138,6 @@ function escapeBody(data) {
     return data.replace(/ as \w+/g, '').replace(/:(uint|int);/g, ' = 0;').replace(/:[\w|*]+/g, '');
 }
 
-var knowType = ['uint', 'int', 'Boolean', 'String', 'Number'];
-
-function parseVariable(v) {
-    var str = 'this.' + v.name;
-    if (v.type.indexOf('Vector') > -1) {
-        str += ' = []';
-    }
-    else if (_.contains(knowType, v.type)) {
-        str += ' = ' + v.value;
-    }
-    else if (v.type.indexOf('ByteArray') > -1) {
-        str += ' = new Buffer(32)';
-    }
-    else {
-        str += ' = new ' + v.type + '()';
-    }
-    return str + ';';
-}
-
 function formatEnumConstants(asClass) {
     var str = '';
     for (var i = 0; i < asClass.constants.length; i++) {
@@ -168,68 +149,26 @@ function formatEnumConstants(asClass) {
     return str;
 }
 
-function formatEnumConstant(c) {
+var knowType = ['uint', 'int', 'Boolean', 'String', 'Number'];
+
+function parseVariable(v) {
+    var str = 'this.' + v.name;
+    if(v.type.indexOf('Vector') > -1){
+        str += ' = []';
+    }
+    else if(_.contains(knowType, v.type)){
+        str += ' = ' + v.value;
+    }
+    else if(v.type.indexOf('ByteArray') > -1){
+        str += ' = new Buffer(32)';
+    }
+    else{
+        str += ' = new ' + v.type + '()';
+    }
+    return str + ';';
+}
+
+function formatEnumConstant (c) {
     return c.name + ': ' + c.value;
 }
 
-function formatSuperImport(asClass) {
-    if (asClass.super === 'Object' || typeof asClass.super === 'undefined') {
-        return '';
-    }
-
-    if (asClass.super === 'NetworkMessage') {
-        return 'var NetworkManager = require(\'NetworkManager\').NetworkManager;';
-    }
-    var imp = _.findWhere(asClass.imports, {class: asClass.super});
-
-
-    var depPath = (imp ? resolveDependencyPath(asClass.namespace, imp.namespace) : './') + resolveFilename(asClass.super) + '.js';
-    return 'require(\'util\').inherits(' + asClass.class + ', ' + 'require(\'' + depPath + '\').' + asClass.super + ');';
-}
-
-function resolveDependencyPath(cdir, tdir, output) {
-    if (!cdir || !tdir) {
-        return './';
-    }
-    if (!output) {
-        var dif = JsDiff.diffWords(cdir, tdir)[0].value;
-        cdir = prepResolveDependencyPath(dif, cdir);
-        tdir = prepResolveDependencyPath(dif, tdir);
-        output = '';
-    }
-    if (cdir.length > 0) {
-        output += '../';
-        return resolveDependencyPath(_.without(cdir, _.first(cdir)), tdir, output);
-    }
-    if (_.isEmpty(output)) {
-        output = './';
-    }
-    if (tdir.length > 0) {
-        output += _.first(tdir) + '/';
-        return resolveDependencyPath(cdir, _.without(tdir, _.first(tdir)), output);
-    }
-
-    return output;
-}
-
-function prepResolveDependencyPath(dif, dir) {
-    var loc = dir.replace(dif, '');
-    if (loc[0] === '.') {
-        loc = loc.substring(1);
-    }
-    return _.isEmpty(loc) ? [] : loc.split('.');
-}
-
-function resolveFilename(filename) {
-    var basename = path.basename(filename, '.as');
-    var str = basename[0].toLowerCase();
-    for (var i = 1; i < basename.length; i++) {
-        var char = basename[i];
-        if (char === char.toUpperCase()) {
-            str += '-';
-        }
-        str += char.toLowerCase();
-    }
-
-    return str;
-}

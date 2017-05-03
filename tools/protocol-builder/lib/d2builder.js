@@ -40,14 +40,14 @@ module.exports = function (src, output, strategy) {
     convertAll("TYPE", strategy.typeConverter, path.join(src, constants.src.type), output, strategy.ext);
     convertAll("MESSAGE", strategy.messageConverter, path.join(src, constants.src.message), output, strategy.ext, function() {
         for (var i = 0; i < future_data.types.length; i++) {
-            if (future_data.types[i] != null)
+            if (future_data.types[i] !== null)
                 fs.appendFile(output, future_data.types[i] + "\n\n", { indent_size: 2 }, function (err) {
                     if(err)
                         throw err;
                 });
         }
         for (var i = 0; i < future_data.messages.length; i++) {
-            if (future_data.messages[i] != null)
+            if (future_data.messages[i] !== null)
                 fs.appendFile(output, future_data.messages[i] + "\n\n", { indent_size: 2 }, function (err) {
                     if(err)
                         throw err;
@@ -71,14 +71,38 @@ function convert(type, converter, filename, output, files) {
                     throw err;
             });
             break;
-        case "TYPE":
-            var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
-            future_data.types[id] = data;
+        case "TYPE": {
+            let len = 0;
+            let cpy = future_data.types.slice(0);
+            for (let i = 0; i < cpy.length; i++) {
+                let x = cpy[i];
+                if (asClass.super === x.class) {
+                    len = future_data.types.unshift(data);
+                    break;
+                }
+            }
+            if (len === 0)
+                future_data.types.push(data);
+            //var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
+            //future_data.types[id] = data;
             break;
-        case "MESSAGE":
-            var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
-            future_data.messages[id] = data;
+        }
+        case "MESSAGE": {
+            let len = 0;
+            let cpy = future_data.messages.slice(0);
+            for (let i = 0; i < cpy.length; i++) {
+                let x = cpy[i];
+                if (asClass.super === x.class) {
+                    len = future_data.messages.unshift(data);
+                    break;
+                }
+            }
+            if (len === 0)
+                future_data.messages.push(data);
+            //var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
+            //future_data.messages[id] = data;
             break;
+        }
     }
 
 
