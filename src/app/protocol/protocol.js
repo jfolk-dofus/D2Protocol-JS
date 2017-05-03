@@ -12942,7 +12942,7 @@ class HelloConnectMessage extends ProtocolMessage {
     constructor(salt, key) {
         super(3);
         this.salt = salt;
-        this.key = key;
+        this.key = key || [];
     }
 
     serialize() {

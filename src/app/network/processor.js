@@ -11,11 +11,11 @@ class Processor {
             } catch (exception) {
                 bot.err("Cannot deserialize message '" + packet.constructor.name + "'");
             }
-            var handler = this.HANDLERS[parseInt(messageId)];
+            var handler = this.HANDLERS[parseInt(messageId)].handler;
             if (handler == null)
                 bot.err("Cannot handle this message '" + packet.constructor.name + "'");
             else
-                handler.handle(bot, packet)
+                handler(bot, packet)
         }
         else {
             bot.err("Handler not found for messageId: " + messageId);
