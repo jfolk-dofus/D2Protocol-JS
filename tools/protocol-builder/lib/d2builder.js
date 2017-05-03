@@ -39,20 +39,21 @@ module.exports = function (src, output, strategy) {
     convertAll("ENUM", strategy.enumConverter, path.join(src, constants.src.enum), output, strategy.ext);
     convertAll("TYPE", strategy.typeConverter, path.join(src, constants.src.type), output, strategy.ext);
     convertAll("MESSAGE", strategy.messageConverter, path.join(src, constants.src.message), output, strategy.ext, function() {
-        for (var i = 0; i < future_data.types.length; i++) {
+
+        sortMessages();
+        sortTypes();
+        var file = "";
+        for (let i = 0; i < future_data.types.length; i++) {
             if (future_data.types[i] !== null)
-                fs.appendFile(output, future_data.types[i] + "\n\n", { indent_size: 2 }, function (err) {
-                    if(err)
-                        throw err;
-                });
+                file += future_data.types[i].data + "\n\n";
         }
-        for (var i = 0; i < future_data.messages.length; i++) {
+        fs.appendFileSync(output, file, { indent_size: 2 });
+        file = "";
+        for (let i = 0; i < future_data.messages.length; i++) {
             if (future_data.messages[i] !== null)
-                fs.appendFile(output, future_data.messages[i] + "\n\n", { indent_size: 2 }, function (err) {
-                    if(err)
-                        throw err;
-                });
+                file += future_data.messages[i].data + "\n\n";
         }
+        fs.appendFileSync(output, file, { indent_size: 2 });
     });
     //fs.copySync(path.join(__dirname, constants.src.protocolTypeManager), path.join(output, constants.output.protocolTypeManager));
     //fs.copySync(path.join(__dirname, constants.src.messageReceiver), path.join(output, constants.output.messageReceiver));
@@ -60,6 +61,13 @@ module.exports = function (src, output, strategy) {
     return this;
 };
 
+/**
+ *
+ * A extends C
+ * D
+ * B extends D
+ * C extends B
+ */
 function convert(type, converter, filename, output, files) {
     const asClass = asReader(filename);
     const data = beautify(converter(asClass, files));
@@ -72,41 +80,51 @@ function convert(type, converter, filename, output, files) {
             });
             break;
         case "TYPE": {
-            let len = 0;
-            let cpy = future_data.types.slice(0);
-            for (let i = 0; i < cpy.length; i++) {
-                let x = cpy[i];
-                if (asClass.super === x.class) {
-                    len = future_data.types.unshift(data);
-                    break;
-                }
-            }
-            if (len === 0)
-                future_data.types.push(data);
-            //var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
-            //future_data.types[id] = data;
+            future_data.types.push({c: asClass, data: data});
             break;
         }
         case "MESSAGE": {
-            let len = 0;
-            let cpy = future_data.messages.slice(0);
-            for (let i = 0; i < cpy.length; i++) {
-                let x = cpy[i];
-                if (asClass.super === x.class) {
-                    len = future_data.messages.unshift(data);
-                    break;
-                }
-            }
-            if (len === 0)
-                future_data.messages.push(data);
-            //var id = _.findWhere(asClass.constants, {name: 'protocolId'}).value;
-            //future_data.messages[id] = data;
+            future_data.messages.push({c: asClass, data: data});
             break;
         }
     }
+}
 
+function sortMessages() {
+    let running = true;
+    while (running) {
+        let found = false;
+        for (let i = 0; i < future_data.messages.length && !found; i++) {
+            let elem = future_data.messages[i];
+            let index = future_data.messages.findIndex(x => x.c.super === elem.c.class);
+            if (index !== -1 && (found = i > index)) {
+                future_data.messages = future_data.messages.filter(x => x.c.class !== elem.c.class);
+                future_data.messages.splice(index, 0, elem);
+                break;
+            }
+        }
+        running = found;
+    }
+    future_data.messages = _.uniq(future_data.messages);
+}
 
-};
+function sortTypes() {
+    let running = true;
+    while (running) {
+        let found = false;
+        for (let i = 0; i < future_data.types.length && !found; i++) {
+            let elem = future_data.types[i];
+            let index = future_data.types.findIndex(x => x.c.super === elem.c.class);
+            if (index !== -1 && (found = i > index)) {
+                future_data.types = future_data.types.filter(x => x.c.class !== elem.c.class);
+                future_data.types.splice(index, 0, elem);
+                break;
+            }
+        }
+        running = found;
+    }
+    future_data.types = _.uniq(future_data.types);
+}
 
 function convertAll(type, converter, src, output, ext, callback) {
     var self = this;
