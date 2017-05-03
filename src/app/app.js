@@ -47,14 +47,14 @@ function () {
     };
 });
 
-require("./app/controllers/AppCtrl.js");
-require("./app/controllers/BotCtrl.js");
-require("./app/controllers/AuthCtrl.js");
-require("./app/controllers/DashboardCtrl.js");
-require("./app/network/NetworkMessage.js");
-require("./app/network/ClientSocket.js");
-require("./app/protocol/Protocol.js");
-require("./app/managers/BotManager.js");
-require("./app/managers/NetworkManager.js");
+require("./app/controllers/app.controller.js");
+require("./app/controllers/bot.controller.js");
+require("./app/controllers/auth.controller.js");
+require("./app/controllers/dashboard.controller.js");
+require("./app/network/network_message.js");
+require("./app/network/client_socket.js");
+require("./app/protocol/protocol.js");
+require("./app/managers/bot_manager.js");
+require("./app/managers/network_manager.js");
 require("./app/io/bytearray.js");
 require("./app/io/custom_data_wrapper.js");

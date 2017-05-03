@@ -1,4 +1,4 @@
-var ClientSocket = require("./network/ClientSocket.js");
+var ClientSocket = require("./network/client_socket.js");
 
 class Bot {
     constructor() {
@@ -16,6 +16,10 @@ class Bot {
 
     debug(text) {
         this.events.emit("log_debug", text);
+    }
+
+    send(packet) {
+        this.socket.send(packet);
     }
 
     get account() {

@@ -1,8 +1,8 @@
 var net = require('net');
 var CustomDataWrapper = require("../io/custom_data_wrapper.js").CustomDataWrapper;
-var NetworkMessage = require("./NetworkMessage");
+var NetworkMessage = require("./network_message");
 var arrayBufferToBuffer = require('arraybuffer-to-buffer');
-var Processor = require("./Processor");
+var Processor = require("./processor");
 
 class ClientSocket {
     constructor(bot) {
