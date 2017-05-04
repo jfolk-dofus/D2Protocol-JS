@@ -9,6 +9,7 @@ class Processor {
             try {
                 packet.deserialize(buffer);
             } catch (exception) {
+                console.log(exception);
                 bot.err("Cannot deserialize message '" + packet.constructor.name + "'");
             }
             var handler = this.HANDLERS[parseInt(messageId)].handler;
