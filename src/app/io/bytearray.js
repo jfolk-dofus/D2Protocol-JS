@@ -944,8 +944,11 @@ var ByteArrayBase = (function () {
             uvrun2_1.runOnce();
         }
     };
-    ByteArrayBase.prototype.toBuffer = function () {
-        var buffer = new Buffer(this.buffer.byteLength);
+    ByteArrayBase.prototype.toBuffer = function (size) {
+        if (typeof size === 'undefined') {
+            size = this.buffer.byteLength;
+        }
+        var buffer = new Buffer(size);
         var view = new Uint8Array(this.buffer);
         for (var i = 0; i < buffer.length; ++i) {
             buffer[i] = view[i];
