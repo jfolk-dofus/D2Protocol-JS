@@ -1,32 +1,27 @@
 var aes = require("aes-js");
 var Protocol = require("../../protocol/protocol.js");
 var crypto = require('crypto');
-
-function bufferToBase64(buf) {
-    var subuf = new Uint8Array(buf);
-    var binstr = Array.prototype.map.call(subuf, function (ch) {
-        return String.fromCharCode(ch);
-    }).join('');
-    return btoa(binstr);
-}
+var ByteBuffer = require('../../io/bytearray');
 
 class AuthHandler {
     static handleHelloConnectMessage(bot, packet) {
-        console.log(packet);
+        var publicKey = "-----BEGIN PUBLIC KEY-----\nMIIBUzANBgkqhkiG9w0BAQEFAAOCAUAAMIIBOwKCATIAgucoka9J2PXcNdjcu6CuDmgteIMB+rih2UZJIuSoNT/0J/lEKL/W4UYbDA4U/6TDS0dkMhOpDsSCIDpO1gPG6+6JfhADRfIJItyHZflyXNUjWOBG4zuxc/L6wldgX24jKo+iCvlDTNUedE553lrfSU23Hwwzt3+doEfgkgAf0l4ZBez5Z/ldp9it2NH6/2/7spHm0Hsvt/YPrJ+EK8ly5fdLk9cvB4QIQel9SQ3JE8UQrxOAx2wrivc6P0gXp5Q6bHQoad1aUp81Ox77l5e8KBJXHzYhdeXaM91wnHTZNhuWmFS3snUHRCBpjDBCkZZ+CxPnKMtm2qJIi57RslALQVTykEZoAETKWpLBlSm92X/eXY2DdGf+a7vju9EigYbX0aXxQy2Ln2ZBWmUJyZE8B58CAwEAAQ==\n-----END PUBLIC KEY-----";
 
         var salt = packet.salt;
-        var key = packet.key;
+        while (salt.length < 32) {
+            salt += " ";
+        }
 
-        var publicKey = "-----BEGIN PUBLIC KEY-----\n";
-        publicKey += bufferToBase64(packet.key) + "\n";
-        publicKey += "-----END PUBLIC KEY-----";
-     //   crt = ursa.createPublicKey(publicKey);
+        var buffer = new ByteBuffer();
+        buffer.writeUTFBytes(salt);
+        buffer.writeBytes(new Int8Array(32), 0, 32);
+        buffer.writeByte(bot.account.username.length);
+        buffer.writeUTFBytes(bot.account.username);
+        buffer.writeUTFBytes(bot.account.password);
+        buffer = buffer.toBuffer(buffer.write_position);
 
-        console.log(publicKey);
-
+        var credentials = crypto.publicEncrypt(publicKey, buffer);
         var version = new Protocol.VersionExtended(2, 41, 1, 120264, 1, Protocol.BuildTypeEnum.RELEASE, 1, 1);
-        var credentials =   crypto.publicEncrypt(publicKey, new Buffer("test" + salt + "test"));
-        console.log(credentials);
         var identificationMessage = new Protocol.IdentificationMessage(version, "fr", credentials, 1, false, false, false, 0, [0]);
         bot.send(identificationMessage);
     }
@@ -35,5 +30,4 @@ class AuthHandler {
         console.log(packet);
     }
 }
-
 module.exports = AuthHandler;

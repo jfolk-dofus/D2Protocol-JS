@@ -55,11 +55,11 @@ class NetworkMessage {
                 break;
 
             case 2:
-                packetLen = buffer.readShort();
+                packetLen = buffer.readUnsignedShort();
                 break;
 
             case 3:
-                packetLen = ((buffer.readByte() & 255) << 16) + ((buffer.readByte() & 255) << 8) + (buffer.readByte() & 255);
+                packetLen = ((buffer.readByte()) << 16) + ((buffer.readByte()) << 8) + (buffer.readByte());
                 break;
 
             default:
