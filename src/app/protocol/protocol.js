@@ -12959,10 +12959,11 @@ class HelloConnectMessage extends ProtocolMessage {
         var _loc4_ = 0;
         this.salt = buffer.readUTF();
         var _loc2_ = buffer.readVarInt();
+        this.key = new Int8Array(_loc2_);
         var _loc3_ = 0;
         while (_loc3_ < _loc2_) {
             _loc4_ = buffer.readByte();
-            this.key.push(_loc4_);
+            this.key[_loc3_] = _loc4_;
             _loc3_++;
         }
     }

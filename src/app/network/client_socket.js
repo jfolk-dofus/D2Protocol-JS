@@ -68,9 +68,7 @@ class ClientSocket {
             var messageBuffer = new CustomDataWrapper(new ByteArray());
             var offset = NetworkMessage.writePacket(messageBuffer, packet.messageId, packet.buffer._data);
             var b = arrayBufferToBuffer(messageBuffer.data.buffer);
-            if(offset == undefined) {
-                offset = 2;
-            }
+            console.log("Offset: " + offset);
             var finalBuffer = b.slice(0, packet.buffer._data.write_position + offset);
             this.socket.write(finalBuffer);
             this.bot.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");

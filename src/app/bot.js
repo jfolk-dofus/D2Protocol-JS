@@ -53,6 +53,9 @@ class Bot {
     on(event_name, event_handler) {
         this.events.on(event_name, event_handler);
     }
+    off(event_name) {
+        this.events.off(event_name);
+    }
     emit(event_name, ...args) {
         this.events.emit(event_name, args);
     }
