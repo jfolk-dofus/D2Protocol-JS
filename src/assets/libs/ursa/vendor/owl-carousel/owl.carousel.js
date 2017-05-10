@@ -724,7 +724,7 @@
 		}
 
 		if (this.is('animating')) {
-			$.support.transform ? this.animate(stage.x) : this.$stage.stop()
+			$.support.transform ? this.animate(stage.x) : this.$stage.stop();
 			this.invalidate('position');
 		}
 
@@ -1687,16 +1687,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * AutoRefresh Plugin
- * @version 2.1.0
- * @author Artus Kolanowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the auto refresh plugin.
 	 * @class The Auto Refresh Plugin
 	 * @param {Owl} carousel - The Owl Carousel
@@ -1799,16 +1791,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Lazy Plugin
- * @version 2.1.0
- * @author Bartosz Wojciechowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the lazy plugin.
 	 * @class The Lazy Plugin
 	 * @param {Owl} carousel - The Owl Carousel
@@ -1935,16 +1919,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * AutoHeight Plugin
- * @version 2.1.0
- * @author Bartosz Wojciechowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the auto height plugin.
 	 * @class The Auto Height Plugin
 	 * @param {Owl} carousel - The Owl Carousel
@@ -2033,16 +2009,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Video Plugin
- * @version 2.1.0
- * @author Bartosz Wojciechowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the video plugin.
 	 * @class The Video Plugin
 	 * @param {Owl} carousel - The Owl Carousel
@@ -2353,16 +2321,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Animate Plugin
- * @version 2.1.0
- * @author Bartosz Wojciechowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the animate plugin.
 	 * @class The Navigation Plugin
 	 * @param {Owl} scope - The Owl Carousel
@@ -2475,17 +2435,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Autoplay Plugin
- * @version 2.1.0
- * @author Bartosz Wojciechowski
- * @author Artus Kolanowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	/**
+(function ($, window, document, undefined) {
+    /**
 	 * Creates the autoplay plugin.
 	 * @class The Autoplay Plugin
 	 * @param {Owl} scope - The Owl Carousel
@@ -2675,15 +2626,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Navigation Plugin
- * @version 2.1.0
- * @author Artus Kolanowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-	'use strict';
+(function ($, window, document, undefined) {
+    'use strict';
 
 	/**
 	 * Creates the navigation plugin.
@@ -3058,15 +3002,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Hash Plugin
- * @version 2.1.0
- * @author Artus Kolanowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-	'use strict';
+(function ($, window, document, undefined) {
+    'use strict';
 
 	/**
 	 * Creates the hash plugin.
@@ -3181,18 +3118,8 @@
 
 })(window.Zepto || window.jQuery, window, document);
 
-/**
- * Support Plugin
- *
- * @version 2.1.0
- * @author Vivid Planet Software GmbH
- * @author Artus Kolanowski
- * @author David Deutsch
- * @license The MIT License (MIT)
- */
-;(function($, window, document, undefined) {
-
-	var style = $('<support>').get(0).style,
+(function ($, window, document, undefined) {
+    var style = $('<support>').get(0).style,
 		prefixes = 'Webkit Moz O ms'.split(' '),
 		events = {
 			transition: {
@@ -3247,19 +3174,19 @@
 
 	if (tests.csstransitions()) {
 		/* jshint -W053 */
-		$.support.transition = new String(prefixed('transition'))
+		$.support.transition = String(prefixed('transition'));
 		$.support.transition.end = events.transition.end[ $.support.transition ];
 	}
 
 	if (tests.cssanimations()) {
 		/* jshint -W053 */
-		$.support.animation = new String(prefixed('animation'))
+		$.support.animation = String(prefixed('animation'));
 		$.support.animation.end = events.animation.end[ $.support.animation ];
 	}
 
 	if (tests.csstransforms()) {
 		/* jshint -W053 */
-		$.support.transform = new String(prefixed('transform'));
+		$.support.transform = String(prefixed('transform'));
 		$.support.transform3d = tests.csstransforms3d();
 	}
 
