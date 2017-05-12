@@ -23,23 +23,26 @@
                     <div class="sidebar__menu">
                         <div class="sidebar__title">Menu</div>
                         <ul class="nav nav-menu">
-                            <li ui-sref-active="active"><a ui-sref="app.dashboard" ui-sref-active="active opened">
-                                <div class="nav-menu__ico"><i class="fa fa-fw fa-tachometer"></i></div>
-                                <div class="nav-menu__text"><span>Dashboard</span></div>
-                            </a>
+                            <li ui-sref-active="active opened">
+                                <a ui-sref="app.dashboard">
+                                    <div class="nav-menu__ico"><i class="fa fa-fw fa-tachometer"></i></div>
+                                    <div class="nav-menu__text"><span>Dashboard</span></div>
+                                </a>
+                            </li>
+                            <li ui-sref-active="active opened">
+                                <a ui-sref="app.settings">
+                                    <div class="nav-menu__ico"><i class="fa fa-fw fa-cogs"></i></div>
+                                    <div class="nav-menu__text"><span>Settings</span></div>
+                                </a>
                             </li>
                         </ul>
-                    </div>
-                </div>
-                <div class="sidebar__cont">
-                    <div class="sidebar__menu">
                         <div class="sidebar__title">Bots</div>
                         <ul class="nav nav-menu">
-                            <li ng-repeat="(index, bot) in bots" ui-sref-active="active opened"><a
-                                    ui-sref="app.bot({ id: index })">
-                                <div class="nav-menu__ico"><i class="fa fa-fw fa-user"></i></div>
-                                <div class="nav-menu__text"><span>{{bot.account.username}}</span></div>
-                            </a>
+                            <li ng-repeat="(index, bot) in bots" ui-sref-active="active opened">
+                                <a ui-sref="app.bot({ id: index })">
+                                    <div class="nav-menu__ico"><i class="fa fa-fw fa-user"></i></div>
+                                    <div class="nav-menu__text"><span>{{bot.account.username}}</span></div>
+                                </a>
                             </li>
                         </ul>
                     </div>

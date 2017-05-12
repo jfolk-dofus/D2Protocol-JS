@@ -1,5 +1,3 @@
-
-
 var angular = angular.module('Alpha', [
     'ui.router'
 ]);
@@ -9,7 +7,7 @@ angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider, 
     $stateProvider
         .state('app', {
             url: "/app",
-            //abstract: true,
+            abstract: true,
             templateUrl: "app/views/app/layout.html",
             controller: 'AppCtrl'
         })
@@ -17,6 +15,11 @@ angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider, 
             url: "/dashboard",
             templateUrl: "app/views/app/dashboard.html",
             controller: "DashboardCtrl"
+        })
+        .state('app.settings', {
+            url: "/settings",
+            templateUrl: "app/views/app/settings.html",
+            controller: "SettingsCtrl"
         })
         .state('app.bot', {
             url: "/bot/:id",
@@ -50,6 +53,7 @@ function () {
 
 require("./app/controllers/app.controller.js");
 require("./app/controllers/bot.controller.js");
+require("./app/controllers/settings.controller.js");
 require("./app/controllers/auth.controller.js");
 require("./app/controllers/dashboard.controller.js");
 require("./app/network/network_message.js");
