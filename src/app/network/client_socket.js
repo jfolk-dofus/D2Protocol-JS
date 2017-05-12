@@ -32,16 +32,17 @@ class ClientSocket {
         });
 
         this.socket.on('end', function(data){
+            self.bot.is_connected = false;
             try {
-                self.bot.log("Client disconnected");
+                self.bot.log("Alpha disconnected from server");
             }
             catch (ex) {
-                self.bot.log("Can't disconnect properly client");
+                self.bot.err("Can't disconnect properly client");
             }
         });
 
         this.socket.connect(5555, '213.248.126.39', function() {
-            self.bot.log("Bot is now connected to server !");
+            self.bot.log("Alpha is now connected to server !");
             self.bot.is_connected = true;
         });
     }
@@ -53,7 +54,7 @@ class ClientSocket {
         var messageId = header >> 2;
         var typeLen = header & 3;
         var messageLen = NetworkMessage.getPacketLength(buffer, typeLen);
-        this.bot.log("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
+        this.bot.debug("Received data (messageId: " + messageId + ", len: " + messageLen + ", real len: " + buffer.data.length + ")");
         var b = arrayBufferToBuffer(buffer.data.buffer);
         var messagePart = null;
         messagePart = b.slice(buffer.position, buffer.position + messageLen);
@@ -63,7 +64,6 @@ class ClientSocket {
 
     send(packet) {
         try {
-            console.log(packet);
             packet.serialize();
             var messageBuffer = new CustomDataWrapper(new ByteArray());
             var offset = NetworkMessage.writePacket(messageBuffer, packet.messageId, packet.buffer._data);
@@ -72,11 +72,11 @@ class ClientSocket {
                 offset = 2;
             var finalBuffer = b.slice(0, messageBuffer._data.write_position);
             this.socket.write(finalBuffer);
-            this.bot.log("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
+            this.bot.debug("Sended packet '" + packet.constructor.name + "' (id: " + packet.messageId + ", packetlen: " + packet.buffer._data.write_position + ", len: " + finalBuffer.length + " -- " + b.length + ")");
         }
         catch (ex) {
             console.log(ex);
-            this.bot.log("Can't send properly packet client");
+            this.bot.err("Can't send properly '" + packet.constructor.name + "'");
         }
     }
 }

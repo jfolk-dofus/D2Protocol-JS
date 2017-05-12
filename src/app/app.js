@@ -4,7 +4,8 @@ var angular = angular.module('Alpha', [
     'ui.router'
 ]);
 
-angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $sceProvider) {
+    $sceProvider.enabled(false);
     $stateProvider
         .state('app', {
             url: "/app",

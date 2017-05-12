@@ -1,9 +1,23 @@
 var ClientSocket = require("./network/client_socket.js");
+var moment = require("moment");
 
 class Bot {
     constructor() {
         this.events = new Events();
-        this.isConnected = false;
+        this.is_connected = false;
+        this.logs = "";
+        let self = this;
+
+        // register events //
+        this.on("log_info", function(text) {
+            self.logs += "<span style='color: #ffffff;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+        });
+        this.on("log_err", function(text) {
+            self.logs += "<span style='color: #ed4949;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+        });
+        this.on("log_debug", function(text) {
+            self.logs += "<span style='color: #1c8ed7;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+        });
     }
 
     log(text) {
@@ -42,12 +56,10 @@ class Bot {
                 this.socket = new ClientSocket(this);
                 break;
         }
-        this.isConnected = true;
     }
 
     disconnect() {
         this.socket.close();
-        this.isConnected = false;
     }
 
     on(event_name, event_handler) {

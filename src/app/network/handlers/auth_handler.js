@@ -23,7 +23,6 @@ function generateAESKey() {
 
 class AuthHandler {
     static handleHelloConnectMessage(bot, packet) {
-        console.log(packet);
         var salt = packet.salt;
         while (salt.length < 32) {
             salt += " ";
@@ -72,8 +71,11 @@ class AuthHandler {
         bot.send(identificationMessage);
     }
 
-    static handleProtocolRequiredMessage(bot, packet) {
-        console.log(packet);
+    static handleProtocolRequired(bot, packet) {
+    }
+
+    static handleLoginQueueStatusMessage(bot, packet) {
+        bot.log("Vous êtes " + packet.position + " sur " + packet.total + " dans la file d'attente.");
     }
 }
 
