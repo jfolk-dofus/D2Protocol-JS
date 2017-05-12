@@ -50,3 +50,7 @@ div.console {
 .navbar-nav {
     margin: 0;
 }
+
+.full-h {
+    height: 100%;
+}
