@@ -12990,7 +12990,7 @@ class IdentificationMessage extends ProtocolMessage {
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 0, this.autoconnect);
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 1, this.useCertificate);
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 2, this.useLoginToken);
-        this.buffer.writeByte(2);
+        this.buffer.writeByte(_loc2_);
         this.version.serialize(this.buffer);
         this.buffer.writeUTF(this.lang);
         this.buffer.writeVarInt(this.credentials.length);
