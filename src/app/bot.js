@@ -1,5 +1,6 @@
 var ClientSocket = require("./network/client_socket.js");
 var moment = require("moment");
+var settings = require('electron-settings');
 
 class Bot {
     constructor() {
@@ -16,7 +17,8 @@ class Bot {
             self.logs += "<span style='color: #ed4949;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
         });
         this.on("log_debug", function(text) {
-            self.logs += "<span style='color: #1c8ed7;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+            if (settings.get("debug", false) == true)
+                self.logs += "<span style='color: #1c8ed7;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
         });
     }
 

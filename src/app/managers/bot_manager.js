@@ -1,12 +1,12 @@
 var ClientSocket = require('../network/client_socket.js').ClientSocket;
 var Bot = require("../bot.js");
 
-angular.service('BotManager', function (NetworkManager) {
-        this.bots = [];
+Alpha.angular.service('BotManager', function (NetworkManager) {
+    this.bots = [];
 
-        this.createBot = function() {
-            var bot = new Bot();
-            this.bots.push(bot);
-            return bot;
-        };
-    });
+    this.createBot = function () {
+        var bot = new Bot();
+        this.bots.push(bot);
+        return bot;
+    };
+});

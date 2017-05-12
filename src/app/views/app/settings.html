@@ -1,9 +1,19 @@
 <div class="main__cont">
-    <div class="main-heading">
-        <div class="main-title">
-            <ol class="breadcrumb">
-                <li class="active">Settings</li>
-            </ol>
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Settings</h3>
+        </div>
+        <div class="st-widget">
+            <div class="st-widget__wrap">
+                <div class="st-widget__cont">
+                    <div class="st-widget__item st-widget__item_switch">
+                        <div class="st-widget__label">Debug mode</div>
+                        <div class="st-widget__switch">
+                            <input bs-switch class="bs-switch" ng-model="debug" type="checkbox" switch-size="mini" switch-on-color="success" switch-off-color="danger">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

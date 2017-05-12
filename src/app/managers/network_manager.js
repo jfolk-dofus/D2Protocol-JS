@@ -1,3 +1,3 @@
-angular.service('NetworkManager', function () {
-        return this;
-    });
+Alpha.angular.service('NetworkManager', function () {
+    return this;
+});

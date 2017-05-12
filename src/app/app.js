@@ -1,8 +1,11 @@
-var angular = angular.module('Alpha', [
-    'ui.router'
-]);
+var Alpha = {
+    angular: angular.module('Alpha', [
+        'ui.router',
+        'frapontillo.bootstrap-switch'
+    ])
+};
 
-angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $sceProvider) {
+Alpha.angular.config(function ($stateProvider, $urlRouterProvider, $locationProvider, $sceProvider) {
     $sceProvider.enabled(false);
     $stateProvider
         .state('app', {
