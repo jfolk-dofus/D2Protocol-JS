@@ -12506,28 +12506,28 @@ class Version extends ProtocolType {
         this.messageId = 11;
     }
 
-    serialize() {
+    serialize(buffer) {
         if (this.major < 0) {
             throw new Error("Forbidden value (" + this.major + ") on element major.");
         }
-        this.buffer.writeByte(this.major);
+        buffer.writeByte(this.major);
         if (this.minor < 0) {
             throw new Error("Forbidden value (" + this.minor + ") on element minor.");
         }
-        this.buffer.writeByte(this.minor);
+        buffer.writeByte(this.minor);
         if (this.release < 0) {
             throw new Error("Forbidden value (" + this.release + ") on element release.");
         }
-        this.buffer.writeByte(this.release);
+        buffer.writeByte(this.release);
         if (this.revision < 0) {
             throw new Error("Forbidden value (" + this.revision + ") on element revision.");
         }
-        this.buffer.writeInt(this.revision);
+        buffer.writeInt(this.revision);
         if (this.patch < 0) {
             throw new Error("Forbidden value (" + this.patch + ") on element patch.");
         }
-        this.buffer.writeByte(this.patch);
-        this.buffer.writeByte(this.buildType);
+        buffer.writeByte(this.patch);
+        buffer.writeByte(this.buildType);
     }
 
     deserialize(buffer) {
@@ -12568,10 +12568,10 @@ class VersionExtended extends Version {
         this.messageId = 393;
     }
 
-    serialize() {
-        super.serialize();
-        this.buffer.writeByte(this.install);
-        this.buffer.writeByte(this.technology);
+    serialize(buffer) {
+        super.serialize(buffer);
+        buffer.writeByte(this.install);
+        buffer.writeByte(this.technology);
     }
 
     deserialize(buffer) {
@@ -12959,7 +12959,7 @@ class HelloConnectMessage extends ProtocolMessage {
         var _loc4_ = 0;
         this.salt = buffer.readUTF();
         var _loc2_ = buffer.readVarInt();
-        this.key = new Int8Array(_loc2_);
+       // this.key = new Int8Array(_loc2_);
         var _loc3_ = 0;
         while (_loc3_ < _loc2_) {
             _loc4_ = buffer.readByte();
@@ -12990,7 +12990,7 @@ class IdentificationMessage extends ProtocolMessage {
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 0, this.autoconnect);
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 1, this.useCertificate);
         _loc2_ = BooleanByteWrapper.setFlag(_loc2_, 2, this.useLoginToken);
-        this.buffer.writeByte(_loc2_);
+        this.buffer.writeByte(2);
         this.version.serialize(this.buffer);
         this.buffer.writeUTF(this.lang);
         this.buffer.writeVarInt(this.credentials.length);
@@ -13029,7 +13029,7 @@ class IdentificationMessage extends ProtocolMessage {
             this.credentials.push(_loc6_);
             _loc3_++;
         }
-        this._serverIdFunc(buffer);
+        this.serverId = buffer.readShort();
         this.sessionOptionalSalt = buffer.readVarLong();
         if (this.sessionOptionalSalt < -9007199254740990 || this.sessionOptionalSalt > 9007199254740990) {
             throw new Error("Forbidden value (" + this.sessionOptionalSalt + ") on element of IdentificationMessage.sessionOptionalSalt.");
@@ -38552,10 +38552,10 @@ class InventoryPresetSaveMessage extends ProtocolMessage {
         this.symbolId = buffer.readByte();
         if (this.symbolId < 0) {
             throw new Error("Forbidden value (" + this.symbolId + ") on element of InventoryPresetSaveMessage.symbolId.");
-        };
+        }
         this.saveEquipment = buffer.readBoolean();
     }
-};
+}
 module.exports.InventoryPresetSaveMessage = InventoryPresetSaveMessage;
 module.exports.messages[6165] = InventoryPresetSaveMessage;
 
@@ -38582,9 +38582,9 @@ class InventoryPresetSaveResultMessage extends ProtocolMessage {
         this.code = buffer.readByte();
         if (this.code < 0) {
             throw new Error("Forbidden value (" + this.code + ") on element of InventoryPresetSaveResultMessage.code.");
-        };
+        }
     }
-};
+}
 module.exports.InventoryPresetSaveResultMessage = InventoryPresetSaveResultMessage;
 module.exports.messages[6170] = InventoryPresetSaveResultMessage;
 
@@ -38602,7 +38602,7 @@ class InventoryPresetUpdateMessage extends ProtocolMessage {
         this.preset = new Preset();
         this.preset.deserialize(buffer);
     }
-};
+}
 module.exports.InventoryPresetUpdateMessage = InventoryPresetUpdateMessage;
 module.exports.messages[6171] = InventoryPresetUpdateMessage;
 
@@ -38625,7 +38625,7 @@ class InventoryPresetUseMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.presetId + ") on element of InventoryPresetUseMessage.presetId.");
         }
     }
-};
+}
 module.exports.InventoryPresetUseMessage = InventoryPresetUseMessage;
 module.exports.messages[6167] = InventoryPresetUseMessage;
 
@@ -38660,7 +38660,7 @@ class InventoryPresetUseResultMessage extends ProtocolMessage {
         this.code = buffer.readByte();
         if (this.code < 0) {
             throw new Error("Forbidden value (" + this.code + ") on element of InventoryPresetUseResultMessage.code.");
-        };
+        }
         var _loc2_ = buffer.readUnsignedShort();
         var _loc3_ = 0;
         while (_loc3_ < _loc2_) {
@@ -38672,7 +38672,7 @@ class InventoryPresetUseResultMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.InventoryPresetUseResultMessage = InventoryPresetUseResultMessage;
 module.exports.messages[6163] = InventoryPresetUseResultMessage;
 
@@ -38705,7 +38705,7 @@ class SpellListMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.SpellListMessage = SpellListMessage;
 module.exports.messages[1200] = SpellListMessage;
 
@@ -38722,7 +38722,7 @@ class StorageInventoryContentMessage extends InventoryContentMessage {
     deserialize(buffer) {
         super.deserialize(buffer);
     }
-};
+}
 module.exports.StorageInventoryContentMessage = StorageInventoryContentMessage;
 module.exports.messages[5646] = StorageInventoryContentMessage;
 
@@ -38745,7 +38745,7 @@ class StorageKamasUpdateMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.kamasTotal + ") on element of StorageKamasUpdateMessage.kamasTotal.");
         }
     }
-};
+}
 module.exports.StorageKamasUpdateMessage = StorageKamasUpdateMessage;
 module.exports.messages[5645] = StorageKamasUpdateMessage;
 
@@ -38768,7 +38768,7 @@ class StorageObjectRemoveMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.objectUID + ") on element of StorageObjectRemoveMessage.objectUID.");
         }
     }
-};
+}
 module.exports.StorageObjectRemoveMessage = StorageObjectRemoveMessage;
 module.exports.messages[5648] = StorageObjectRemoveMessage;
 
@@ -38803,7 +38803,7 @@ class StorageObjectsRemoveMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.StorageObjectsRemoveMessage = StorageObjectsRemoveMessage;
 module.exports.messages[6035] = StorageObjectsRemoveMessage;
 
@@ -38833,7 +38833,7 @@ class StorageObjectsUpdateMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.StorageObjectsUpdateMessage = StorageObjectsUpdateMessage;
 module.exports.messages[6036] = StorageObjectsUpdateMessage;
 
@@ -38851,7 +38851,7 @@ class StorageObjectUpdateMessage extends ProtocolMessage {
         this.object = new ObjectItem();
         this.object.deserialize(buffer);
     }
-};
+}
 module.exports.StorageObjectUpdateMessage = StorageObjectUpdateMessage;
 module.exports.messages[5647] = StorageObjectUpdateMessage;
 
@@ -38871,7 +38871,7 @@ class AccessoryPreviewErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.error + ") on element of AccessoryPreviewErrorMessage.error.");
         }
     }
-};
+}
 module.exports.AccessoryPreviewErrorMessage = AccessoryPreviewErrorMessage;
 module.exports.messages[6521] = AccessoryPreviewErrorMessage;
 
@@ -38889,7 +38889,7 @@ class AccessoryPreviewMessage extends ProtocolMessage {
         this.look = new EntityLook();
         this.look.deserialize(buffer);
     }
-};
+}
 module.exports.AccessoryPreviewMessage = AccessoryPreviewMessage;
 module.exports.messages[6517] = AccessoryPreviewMessage;
 
@@ -38924,7 +38924,7 @@ class AccessoryPreviewRequestMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.AccessoryPreviewRequestMessage = AccessoryPreviewRequestMessage;
 module.exports.messages[6518] = AccessoryPreviewRequestMessage;
 
@@ -38951,9 +38951,9 @@ class PopupWarningMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.lockDuration + ") on element of PopupWarningMessage.lockDuration.");
         }
         this.author = buffer.readUTF();
-        this.content = buffer.readUTF();;
+        this.content = buffer.readUTF();
     }
-};
+}
 module.exports.PopupWarningMessage = PopupWarningMessage;
 module.exports.messages[6134] = PopupWarningMessage;
 
@@ -38970,7 +38970,7 @@ class AreaFightModificatorUpdateMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.spellPairId = buffer.readInt();
     }
-};
+}
 module.exports.AreaFightModificatorUpdateMessage = AreaFightModificatorUpdateMessage;
 module.exports.messages[6493] = AreaFightModificatorUpdateMessage;
 
@@ -38987,7 +38987,7 @@ class PrismAttackRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.PrismAttackRequestMessage = PrismAttackRequestMessage;
 module.exports.messages[6042] = PrismAttackRequestMessage;
 
@@ -39005,7 +39005,7 @@ class PrismFightAddedMessage extends ProtocolMessage {
         this.fight = new PrismFightersInformation();
         this.fight.deserialize(buffer);
     }
-};
+}
 module.exports.PrismFightAddedMessage = PrismFightAddedMessage;
 module.exports.messages[6452] = PrismFightAddedMessage;
 
@@ -39038,12 +39038,12 @@ class PrismFightAttackerAddMessage extends ProtocolMessage {
         this.fightId = buffer.readVarUhShort();
         if (this.fightId < 0) {
             throw new Error("Forbidden value (" + this.fightId + ") on element of PrismFightAttackerAddMessage.fightId.");
-        };
+        }
         var _loc2_ = buffer.readUnsignedShort();
         this.attacker = ProtocolTypeManager.getInstance(CharacterMinimalPlusLookInformations, _loc2_);
         this.attacker.deserialize(buffer);
     }
-};
+}
 module.exports.PrismFightAttackerAddMessage = PrismFightAttackerAddMessage;
 module.exports.messages[5893] = PrismFightAttackerAddMessage;
 
@@ -39078,13 +39078,13 @@ class PrismFightAttackerRemoveMessage extends ProtocolMessage {
         this.fightId = buffer.readVarUhShort();
         if (this.fightId < 0) {
             throw new Error("Forbidden value (" + this.fightId + ") on element of PrismFightAttackerRemoveMessage.fightId.");
-        };
+        }
         this.fighterToRemoveId = buffer.readVarUhLong();
         if (this.fighterToRemoveId < 0 || this.fighterToRemoveId > 9007199254740990) {
             throw new Error("Forbidden value (" + this.fighterToRemoveId + ") on element of PrismFightAttackerRemoveMessage.fighterToRemoveId.");
-        };
+        }
     }
-};
+}
 module.exports.PrismFightAttackerRemoveMessage = PrismFightAttackerRemoveMessage;
 module.exports.messages[5897] = PrismFightAttackerRemoveMessage;
 
@@ -39117,12 +39117,12 @@ class PrismFightDefenderAddMessage extends ProtocolMessage {
         this.fightId = buffer.readVarUhShort();
         if (this.fightId < 0) {
             throw new Error("Forbidden value (" + this.fightId + ") on element of PrismFightDefenderAddMessage.fightId.");
-        };
+        }
         var _loc2_ = buffer.readUnsignedShort();
         this.defender = ProtocolTypeManager.getInstance(CharacterMinimalPlusLookInformations, _loc2_);
         this.defender.deserialize(buffer);
     }
-};
+}
 module.exports.PrismFightDefenderAddMessage = PrismFightDefenderAddMessage;
 module.exports.messages[5895] = PrismFightDefenderAddMessage;
 
@@ -39157,13 +39157,13 @@ class PrismFightDefenderLeaveMessage extends ProtocolMessage {
         this.fightId = buffer.readVarUhShort();
         if (this.fightId < 0) {
             throw new Error("Forbidden value (" + this.fightId + ") on element of PrismFightDefenderLeaveMessage.fightId.");
-        };
+        }
         this.fighterToRemoveId = buffer.readVarUhLong();
         if (this.fighterToRemoveId < 0 || this.fighterToRemoveId > 9007199254740990) {
             throw new Error("Forbidden value (" + this.fighterToRemoveId + ") on element of PrismFightDefenderLeaveMessage.fighterToRemoveId.");
-        };
+        }
     }
-};
+}
 module.exports.PrismFightDefenderLeaveMessage = PrismFightDefenderLeaveMessage;
 module.exports.messages[5892] = PrismFightDefenderLeaveMessage;
 
@@ -39189,7 +39189,7 @@ class PrismFightJoinLeaveRequestMessage extends ProtocolMessage {
         }
         this.join = buffer.readBoolean();
     }
-};
+}
 module.exports.PrismFightJoinLeaveRequestMessage = PrismFightJoinLeaveRequestMessage;
 module.exports.messages[5843] = PrismFightJoinLeaveRequestMessage;
 
@@ -39212,7 +39212,7 @@ class PrismFightRemovedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.subAreaId + ") on element of PrismFightRemovedMessage.subAreaId.");
         }
     }
-};
+}
 module.exports.PrismFightRemovedMessage = PrismFightRemovedMessage;
 module.exports.messages[6453] = PrismFightRemovedMessage;
 
@@ -39235,7 +39235,7 @@ class PrismFightStateUpdateMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.state + ") on element of PrismFightStateUpdateMessage.state.");
         }
     }
-};
+}
 module.exports.PrismFightStateUpdateMessage = PrismFightStateUpdateMessage;
 module.exports.messages[6040] = PrismFightStateUpdateMessage;
 
@@ -39265,9 +39265,9 @@ class PrismFightSwapRequestMessage extends ProtocolMessage {
         this.targetId = buffer.readVarUhLong();
         if (this.targetId < 0 || this.targetId > 9007199254740990) {
             throw new Error("Forbidden value (" + this.targetId + ") on element of PrismFightSwapRequestMessage.targetId.");
-        };
+        }
     }
-};
+}
 module.exports.PrismFightSwapRequestMessage = PrismFightSwapRequestMessage;
 module.exports.messages[5901] = PrismFightSwapRequestMessage;
 
@@ -39284,7 +39284,7 @@ class PrismInfoCloseMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.PrismInfoCloseMessage = PrismInfoCloseMessage;
 module.exports.messages[5853] = PrismInfoCloseMessage;
 
@@ -39304,7 +39304,7 @@ class PrismInfoInValidMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of PrismInfoInValidMessage.reason.");
         }
     }
-};
+}
 module.exports.PrismInfoInValidMessage = PrismInfoInValidMessage;
 module.exports.messages[5859] = PrismInfoInValidMessage;
 
@@ -39321,7 +39321,7 @@ class PrismInfoJoinLeaveRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.join = buffer.readBoolean();
     }
-};
+}
 module.exports.PrismInfoJoinLeaveRequestMessage = PrismInfoJoinLeaveRequestMessage;
 module.exports.messages[5844] = PrismInfoJoinLeaveRequestMessage;
 
@@ -39338,7 +39338,7 @@ class PrismModuleExchangeRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.PrismModuleExchangeRequestMessage = PrismModuleExchangeRequestMessage;
 module.exports.messages[6531] = PrismModuleExchangeRequestMessage;
 
@@ -39364,7 +39364,7 @@ class PrismSetSabotagedRefusedMessage extends ProtocolMessage {
         }
         this.reason = buffer.readByte();
     }
-};
+}
 module.exports.PrismSetSabotagedRefusedMessage = PrismSetSabotagedRefusedMessage;
 module.exports.messages[6466] = PrismSetSabotagedRefusedMessage;
 
@@ -39387,7 +39387,7 @@ class PrismSetSabotagedRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.subAreaId + ") on element of PrismSetSabotagedRequestMessage.subAreaId.");
         }
     }
-};
+}
 module.exports.PrismSetSabotagedRequestMessage = PrismSetSabotagedRequestMessage;
 module.exports.messages[6468] = PrismSetSabotagedRequestMessage;
 
@@ -39404,7 +39404,7 @@ class PrismSettingsErrorMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.PrismSettingsErrorMessage = PrismSettingsErrorMessage;
 module.exports.messages[6442] = PrismSettingsErrorMessage;
 
@@ -39434,9 +39434,9 @@ class PrismSettingsRequestMessage extends ProtocolMessage {
         this.startDefenseTime = buffer.readByte();
         if (this.startDefenseTime < 0) {
             throw new Error("Forbidden value (" + this.startDefenseTime + ") on element of PrismSettingsRequestMessage.startDefenseTime.");
-        };
+        }
     }
-};
+}
 module.exports.PrismSettingsRequestMessage = PrismSettingsRequestMessage;
 module.exports.messages[6437] = PrismSettingsRequestMessage;
 
@@ -39466,7 +39466,7 @@ class PrismsInfoValidMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.PrismsInfoValidMessage = PrismsInfoValidMessage;
 module.exports.messages[6451] = PrismsInfoValidMessage;
 
@@ -39499,7 +39499,7 @@ class PrismsListMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.PrismsListMessage = PrismsListMessage;
 module.exports.messages[6440] = PrismsListMessage;
 
@@ -39519,7 +39519,7 @@ class PrismsListRegisterMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.listen + ") on element of PrismsListRegisterMessage.listen.");
         }
     }
-};
+}
 module.exports.PrismsListRegisterMessage = PrismsListRegisterMessage;
 module.exports.messages[6441] = PrismsListRegisterMessage;
 
@@ -39536,7 +39536,7 @@ class PrismsListUpdateMessage extends PrismsListMessage {
     deserialize(buffer) {
         super.deserialize(buffer);
     }
-};
+}
 module.exports.PrismsListUpdateMessage = PrismsListUpdateMessage;
 module.exports.messages[6438] = PrismsListUpdateMessage;
 
@@ -39556,7 +39556,7 @@ class PrismUseRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.moduleToUse + ") on element of PrismUseRequestMessage.moduleToUse.");
         }
     }
-};
+}
 module.exports.PrismUseRequestMessage = PrismUseRequestMessage;
 module.exports.messages[6041] = PrismUseRequestMessage;
 
@@ -39582,7 +39582,7 @@ class AlignmentRankUpdateMessage extends ProtocolMessage {
         }
         this.verbose = buffer.readBoolean();
     }
-};
+}
 module.exports.AlignmentRankUpdateMessage = AlignmentRankUpdateMessage;
 module.exports.messages[6058] = AlignmentRankUpdateMessage;
 
@@ -39599,7 +39599,7 @@ class SetEnableAVARequestMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.enable = buffer.readBoolean();
     }
-};
+}
 module.exports.SetEnableAVARequestMessage = SetEnableAVARequestMessage;
 module.exports.messages[6443] = SetEnableAVARequestMessage;
 
@@ -39616,7 +39616,7 @@ class SetEnablePVPRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.enable = buffer.readBoolean();
     }
-};
+}
 module.exports.SetEnablePVPRequestMessage = SetEnablePVPRequestMessage;
 module.exports.messages[1810] = SetEnablePVPRequestMessage;
 
@@ -39669,7 +39669,7 @@ class UpdateMapPlayersAgressableStatusMessage extends ProtocolMessage {
             _loc5_++;
         }
     }
-};
+}
 module.exports.UpdateMapPlayersAgressableStatusMessage = UpdateMapPlayersAgressableStatusMessage;
 module.exports.messages[6454] = UpdateMapPlayersAgressableStatusMessage;
 
@@ -39696,9 +39696,9 @@ class UpdateSelfAgressableStatusMessage extends ProtocolMessage {
         this.probationTime = buffer.readInt();
         if (this.probationTime < 0) {
             throw new Error("Forbidden value (" + this.probationTime + ") on element of UpdateSelfAgressableStatusMessage.probationTime.");
-        };
+        }
     }
-};
+}
 module.exports.UpdateSelfAgressableStatusMessage = UpdateSelfAgressableStatusMessage;
 module.exports.messages[6456] = UpdateSelfAgressableStatusMessage;
 
@@ -39728,9 +39728,9 @@ class CharacterReportMessage extends ProtocolMessage {
         this.reason = buffer.readByte();
         if (this.reason < 0) {
             throw new Error("Forbidden value (" + this.reason + ") on element of CharacterReportMessage.reason.");
-        };
+        }
     }
-};
+}
 module.exports.CharacterReportMessage = CharacterReportMessage;
 module.exports.messages[6079] = CharacterReportMessage;
 
@@ -39753,7 +39753,7 @@ class CinematicMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.cinematicId + ") on element of CinematicMessage.cinematicId.");
         }
     }
-};
+}
 module.exports.CinematicMessage = CinematicMessage;
 module.exports.messages[6053] = CinematicMessage;
 
@@ -39776,7 +39776,7 @@ class URLOpenMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.urlId + ") on element of URLOpenMessage.urlId.");
         }
     }
-};
+}
 module.exports.URLOpenMessage = URLOpenMessage;
 module.exports.messages[6266] = URLOpenMessage;
 
@@ -39796,7 +39796,7 @@ class ShortcutBarAddErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.error + ") on element of ShortcutBarAddErrorMessage.error.");
         }
     }
-};
+}
 module.exports.ShortcutBarAddErrorMessage = ShortcutBarAddErrorMessage;
 module.exports.messages[6227] = ShortcutBarAddErrorMessage;
 
@@ -39822,7 +39822,7 @@ class ShortcutBarAddRequestMessage extends ProtocolMessage {
         this.shortcut = ProtocolTypeManager.getInstance(Shortcut, _loc2_);
         this.shortcut.deserialize(buffer);
     }
-};
+}
 module.exports.ShortcutBarAddRequestMessage = ShortcutBarAddRequestMessage;
 module.exports.messages[6225] = ShortcutBarAddRequestMessage;
 
@@ -39861,7 +39861,7 @@ class ShortcutBarContentMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.ShortcutBarContentMessage = ShortcutBarContentMessage;
 module.exports.messages[6231] = ShortcutBarContentMessage;
 
@@ -39887,7 +39887,7 @@ class ShortcutBarRefreshMessage extends ProtocolMessage {
         this.shortcut = ProtocolTypeManager.getInstance(Shortcut, _loc2_);
         this.shortcut.deserialize(buffer);
     }
-};
+}
 module.exports.ShortcutBarRefreshMessage = ShortcutBarRefreshMessage;
 module.exports.messages[6229] = ShortcutBarRefreshMessage;
 
@@ -39914,9 +39914,9 @@ class ShortcutBarRemovedMessage extends ProtocolMessage {
         this.slot = buffer.readByte();
         if (this.slot < 0 || this.slot > 99) {
             throw new Error("Forbidden value (" + this.slot + ") on element of ShortcutBarRemovedMessage.slot.");
-        };
+        }
     }
-};
+}
 module.exports.ShortcutBarRemovedMessage = ShortcutBarRemovedMessage;
 module.exports.messages[6224] = ShortcutBarRemovedMessage;
 
@@ -39936,7 +39936,7 @@ class ShortcutBarRemoveErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.error + ") on element of ShortcutBarRemoveErrorMessage.error.");
         }
     }
-};
+}
 module.exports.ShortcutBarRemoveErrorMessage = ShortcutBarRemoveErrorMessage;
 module.exports.messages[6222] = ShortcutBarRemoveErrorMessage;
 
@@ -39963,9 +39963,9 @@ class ShortcutBarRemoveRequestMessage extends ProtocolMessage {
         this.slot = buffer.readByte();
         if (this.slot < 0 || this.slot > 99) {
             throw new Error("Forbidden value (" + this.slot + ") on element of ShortcutBarRemoveRequestMessage.slot.");
-        };
+        }
     }
-};
+}
 module.exports.ShortcutBarRemoveRequestMessage = ShortcutBarRemoveRequestMessage;
 module.exports.messages[6228] = ShortcutBarRemoveRequestMessage;
 
@@ -39991,7 +39991,7 @@ class ShortcutBarReplacedMessage extends ProtocolMessage {
         this.shortcut = ProtocolTypeManager.getInstance(Shortcut, _loc2_);
         this.shortcut.deserialize(buffer);
     }
-};
+}
 module.exports.ShortcutBarReplacedMessage = ShortcutBarReplacedMessage;
 module.exports.messages[6706] = ShortcutBarReplacedMessage;
 
@@ -40011,7 +40011,7 @@ class ShortcutBarSwapErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.error + ") on element of ShortcutBarSwapErrorMessage.error.");
         }
     }
-};
+}
 module.exports.ShortcutBarSwapErrorMessage = ShortcutBarSwapErrorMessage;
 module.exports.messages[6226] = ShortcutBarSwapErrorMessage;
 
@@ -40043,13 +40043,13 @@ class ShortcutBarSwapRequestMessage extends ProtocolMessage {
         this.firstSlot = buffer.readByte();
         if (this.firstSlot < 0 || this.firstSlot > 99) {
             throw new Error("Forbidden value (" + this.firstSlot + ") on element of ShortcutBarSwapRequestMessage.firstSlot.");
-        };
+        }
         this.secondSlot = buffer.readByte();
         if (this.secondSlot < 0 || this.secondSlot > 99) {
             throw new Error("Forbidden value (" + this.secondSlot + ") on element of ShortcutBarSwapRequestMessage.secondSlot.");
-        };
+        }
     }
-};
+}
 module.exports.ShortcutBarSwapRequestMessage = ShortcutBarSwapRequestMessage;
 module.exports.messages[6230] = ShortcutBarSwapRequestMessage;
 
@@ -40072,7 +40072,7 @@ class ContactLookErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.requestId + ") on element of ContactLookErrorMessage.requestId.");
         }
     }
-};
+}
 module.exports.ContactLookErrorMessage = ContactLookErrorMessage;
 module.exports.messages[6045] = ContactLookErrorMessage;
 
@@ -40107,11 +40107,11 @@ class ContactLookMessage extends ProtocolMessage {
         this.playerId = buffer.readVarUhLong();
         if (this.playerId < 0 || this.playerId > 9007199254740990) {
             throw new Error("Forbidden value (" + this.playerId + ") on element of ContactLookMessage.playerId.");
-        };
+        }
         this.look = new EntityLook();
         this.look.deserialize(buffer);
     }
-};
+}
 module.exports.ContactLookMessage = ContactLookMessage;
 module.exports.messages[5934] = ContactLookMessage;
 
@@ -40138,9 +40138,9 @@ class ContactLookRequestMessage extends ProtocolMessage {
         this.contactType = buffer.readByte();
         if (this.contactType < 0) {
             throw new Error("Forbidden value (" + this.contactType + ") on element of ContactLookRequestMessage.contactType.");
-        };
+        }
     }
-};
+}
 module.exports.ContactLookRequestMessage = ContactLookRequestMessage;
 module.exports.messages[5932] = ContactLookRequestMessage;
 
@@ -40166,7 +40166,7 @@ class ContactLookRequestByIdMessage extends ContactLookRequestMessage {
             throw new Error("Forbidden value (" + this.playerId + ") on element of ContactLookRequestByIdMessage.playerId.");
         }
     }
-};
+}
 module.exports.ContactLookRequestByIdMessage = ContactLookRequestByIdMessage;
 module.exports.messages[5935] = ContactLookRequestByIdMessage;
 
@@ -40186,7 +40186,7 @@ class ContactLookRequestByNameMessage extends ContactLookRequestMessage {
         super.deserialize(buffer);
         this.playerName = buffer.readUTF();
     }
-};
+}
 module.exports.ContactLookRequestByNameMessage = ContactLookRequestByNameMessage;
 module.exports.messages[5933] = ContactLookRequestByNameMessage;
 
@@ -40204,7 +40204,7 @@ class StartupActionAddMessage extends ProtocolMessage {
         this.newAction = new StartupActionAddObject();
         this.newAction.deserialize(buffer);
     }
-};
+}
 module.exports.StartupActionAddMessage = StartupActionAddMessage;
 module.exports.messages[6538] = StartupActionAddMessage;
 
@@ -40234,7 +40234,7 @@ class StartupActionFinishedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.actionId + ") on element of StartupActionFinishedMessage.actionId.");
         }
     }
-};
+}
 module.exports.StartupActionFinishedMessage = StartupActionFinishedMessage;
 module.exports.messages[1304] = StartupActionFinishedMessage;
 
@@ -40257,7 +40257,7 @@ class StartupActionsAllAttributionMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.characterId + ") on element of StartupActionsAllAttributionMessage.characterId.");
         }
     }
-};
+}
 module.exports.StartupActionsAllAttributionMessage = StartupActionsAllAttributionMessage;
 module.exports.messages[6537] = StartupActionsAllAttributionMessage;
 
@@ -40274,7 +40274,7 @@ class StartupActionsExecuteMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.StartupActionsExecuteMessage = StartupActionsExecuteMessage;
 module.exports.messages[1302] = StartupActionsExecuteMessage;
 
@@ -40304,7 +40304,7 @@ class StartupActionsListMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.StartupActionsListMessage = StartupActionsListMessage;
 module.exports.messages[1301] = StartupActionsListMessage;
 
@@ -40334,9 +40334,9 @@ class StartupActionsObjetAttributionMessage extends ProtocolMessage {
         this.characterId = buffer.readVarUhLong();
         if (this.characterId < 0 || this.characterId > 9007199254740990) {
             throw new Error("Forbidden value (" + this.characterId + ") on element of StartupActionsObjetAttributionMessage.characterId.");
-        };
+        }
     }
-};
+}
 module.exports.StartupActionsObjetAttributionMessage = StartupActionsObjetAttributionMessage;
 module.exports.messages[1303] = StartupActionsObjetAttributionMessage;
 
@@ -40356,7 +40356,7 @@ class SubscriptionLimitationMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of SubscriptionLimitationMessage.reason.");
         }
     }
-};
+}
 module.exports.SubscriptionLimitationMessage = SubscriptionLimitationMessage;
 module.exports.messages[5542] = SubscriptionLimitationMessage;
 
@@ -40373,7 +40373,7 @@ class SubscriptionZoneMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.active = buffer.readBoolean();
     }
-};
+}
 module.exports.SubscriptionZoneMessage = SubscriptionZoneMessage;
 module.exports.messages[5573] = SubscriptionZoneMessage;
 
@@ -40396,7 +40396,7 @@ class OrnamentGainedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.ornamentId + ") on element of OrnamentGainedMessage.ornamentId.");
         }
     }
-};
+}
 module.exports.OrnamentGainedMessage = OrnamentGainedMessage;
 module.exports.messages[6368] = OrnamentGainedMessage;
 
@@ -40419,7 +40419,7 @@ class OrnamentSelectedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.ornamentId + ") on element of OrnamentSelectedMessage.ornamentId.");
         }
     }
-};
+}
 module.exports.OrnamentSelectedMessage = OrnamentSelectedMessage;
 module.exports.messages[6369] = OrnamentSelectedMessage;
 
@@ -40439,7 +40439,7 @@ class OrnamentSelectErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of OrnamentSelectErrorMessage.reason.");
         }
     }
-};
+}
 module.exports.OrnamentSelectErrorMessage = OrnamentSelectErrorMessage;
 module.exports.messages[6370] = OrnamentSelectErrorMessage;
 
@@ -40462,7 +40462,7 @@ class OrnamentSelectRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.ornamentId + ") on element of OrnamentSelectRequestMessage.ornamentId.");
         }
     }
-};
+}
 module.exports.OrnamentSelectRequestMessage = OrnamentSelectRequestMessage;
 module.exports.messages[6374] = OrnamentSelectRequestMessage;
 
@@ -40485,7 +40485,7 @@ class TitleGainedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.titleId + ") on element of TitleGainedMessage.titleId.");
         }
     }
-};
+}
 module.exports.TitleGainedMessage = TitleGainedMessage;
 module.exports.messages[6364] = TitleGainedMessage;
 
@@ -40508,7 +40508,7 @@ class TitleLostMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.titleId + ") on element of TitleLostMessage.titleId.");
         }
     }
-};
+}
 module.exports.TitleLostMessage = TitleLostMessage;
 module.exports.messages[6371] = TitleLostMessage;
 
@@ -40579,7 +40579,7 @@ class TitlesAndOrnamentsListMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.activeOrnament + ") on element of TitlesAndOrnamentsListMessage.activeOrnament.");
         }
     }
-};
+}
 module.exports.TitlesAndOrnamentsListMessage = TitlesAndOrnamentsListMessage;
 module.exports.messages[6367] = TitlesAndOrnamentsListMessage;
 
@@ -40596,7 +40596,7 @@ class TitlesAndOrnamentsListRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.TitlesAndOrnamentsListRequestMessage = TitlesAndOrnamentsListRequestMessage;
 module.exports.messages[6363] = TitlesAndOrnamentsListRequestMessage;
 
@@ -40619,7 +40619,7 @@ class TitleSelectedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.titleId + ") on element of TitleSelectedMessage.titleId.");
         }
     }
-};
+}
 module.exports.TitleSelectedMessage = TitleSelectedMessage;
 module.exports.messages[6366] = TitleSelectedMessage;
 
@@ -40639,7 +40639,7 @@ class TitleSelectErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of TitleSelectErrorMessage.reason.");
         }
     }
-};
+}
 module.exports.TitleSelectErrorMessage = TitleSelectErrorMessage;
 module.exports.messages[6373] = TitleSelectErrorMessage;
 
@@ -40662,7 +40662,7 @@ class TitleSelectRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.titleId + ") on element of TitleSelectRequestMessage.titleId.");
         }
     }
-};
+}
 module.exports.TitleSelectRequestMessage = TitleSelectRequestMessage;
 module.exports.messages[6365] = TitleSelectRequestMessage;
 
@@ -40682,7 +40682,7 @@ class ClientUIOpenedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.type + ") on element of ClientUIOpenedMessage.type.");
         }
     }
-};
+}
 module.exports.ClientUIOpenedMessage = ClientUIOpenedMessage;
 module.exports.messages[6459] = ClientUIOpenedMessage;
 
@@ -40708,7 +40708,7 @@ class ClientUIOpenedByObjectMessage extends ClientUIOpenedMessage {
             throw new Error("Forbidden value (" + this.uid + ") on element of ClientUIOpenedByObjectMessage.uid.");
         }
     }
-};
+}
 module.exports.ClientUIOpenedByObjectMessage = ClientUIOpenedByObjectMessage;
 module.exports.messages[6463] = ClientUIOpenedByObjectMessage;
 
@@ -40738,9 +40738,9 @@ class ProtocolRequired extends ProtocolMessage {
         this.currentVersion = buffer.readInt();
         if (this.currentVersion < 0) {
             throw new Error("Forbidden value (" + this.currentVersion + ") on element of ProtocolRequired.currentVersion.");
-        };
+        }
     }
-};
+}
 module.exports.ProtocolRequired = ProtocolRequired;
 module.exports.messages[1] = ProtocolRequired;
 
@@ -40770,9 +40770,9 @@ class LoginQueueStatusMessage extends ProtocolMessage {
         this.total = buffer.readUnsignedShort();
         if (this.total < 0 || this.total > 65535) {
             throw new Error("Forbidden value (" + this.total + ") on element of LoginQueueStatusMessage.total.");
-        };
+        }
     }
-};
+}
 module.exports.LoginQueueStatusMessage = LoginQueueStatusMessage;
 module.exports.messages[10] = LoginQueueStatusMessage;
 
@@ -40802,9 +40802,9 @@ class QueueStatusMessage extends ProtocolMessage {
         this.total = buffer.readUnsignedShort();
         if (this.total < 0 || this.total > 65535) {
             throw new Error("Forbidden value (" + this.total + ") on element of QueueStatusMessage.total.");
-        };
+        }
     }
-};
+}
 module.exports.QueueStatusMessage = QueueStatusMessage;
 module.exports.messages[6100] = QueueStatusMessage;
 
@@ -40825,7 +40825,7 @@ class TrustStatusMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.deserializeByteBoxes(buffer);
     }
-};
+}
 module.exports.TrustStatusMessage = TrustStatusMessage;
 module.exports.messages[6267] = TrustStatusMessage;
 
@@ -40849,9 +40849,9 @@ class CheckFileMessage extends ProtocolMessage {
         if (this.type < 0) {
             throw new Error("Forbidden value (" + this.type + ") on element of CheckFileMessage.type.");
         }
-        this.value = buffer.readUTF();;
+        this.value = buffer.readUTF();
     }
-};
+}
 module.exports.CheckFileMessage = CheckFileMessage;
 module.exports.messages[6156] = CheckFileMessage;
 
@@ -40874,7 +40874,7 @@ class CheckFileRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.type + ") on element of CheckFileRequestMessage.type.");
         }
     }
-};
+}
 module.exports.CheckFileRequestMessage = CheckFileRequestMessage;
 module.exports.messages[6154] = CheckFileRequestMessage;
 
@@ -40903,7 +40903,7 @@ class CheckIntegrityMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.CheckIntegrityMessage = CheckIntegrityMessage;
 module.exports.messages[6372] = CheckIntegrityMessage;
 
@@ -40920,7 +40920,7 @@ class ClientKeyMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.key = buffer.readUTF();
     }
-};
+}
 module.exports.ClientKeyMessage = ClientKeyMessage;
 module.exports.messages[5607] = ClientKeyMessage;
 
@@ -40943,7 +40943,7 @@ class RawDataMessage extends ProtocolMessage {
         var _loc2_ = buffer.readVarInt();
         buffer.readBytes(this.content, 0, _loc2_);
     }
-};
+}
 module.exports.RawDataMessage = RawDataMessage;
 module.exports.messages[6253] = RawDataMessage;
 
@@ -40984,7 +40984,7 @@ class SystemMessageDisplayMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.SystemMessageDisplayMessage = SystemMessageDisplayMessage;
 module.exports.messages[189] = SystemMessageDisplayMessage;
 
@@ -41007,7 +41007,7 @@ class SubscriptionUpdateMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.timestamp + ") on element of SubscriptionUpdateMessage.timestamp.");
         }
     }
-};
+}
 module.exports.SubscriptionUpdateMessage = SubscriptionUpdateMessage;
 module.exports.messages[6616] = SubscriptionUpdateMessage;
 
@@ -41030,7 +41030,7 @@ class DownloadCurrentSpeedMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.downloadSpeed + ") on element of DownloadCurrentSpeedMessage.downloadSpeed.");
         }
     }
-};
+}
 module.exports.DownloadCurrentSpeedMessage = DownloadCurrentSpeedMessage;
 module.exports.messages[1511] = DownloadCurrentSpeedMessage;
 
@@ -41054,9 +41054,9 @@ class DownloadErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.errorId + ") on element of DownloadErrorMessage.errorId.");
         }
         this.message = buffer.readUTF();
-        this.helpUrl = buffer.readUTF();;
+        this.helpUrl = buffer.readUTF();
     }
-};
+}
 module.exports.DownloadErrorMessage = DownloadErrorMessage;
 module.exports.messages[1513] = DownloadErrorMessage;
 
@@ -41073,7 +41073,7 @@ class DownloadGetCurrentSpeedRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.DownloadGetCurrentSpeedRequestMessage = DownloadGetCurrentSpeedRequestMessage;
 module.exports.messages[1510] = DownloadGetCurrentSpeedRequestMessage;
 
@@ -41090,7 +41090,7 @@ class DownloadPartMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.id = buffer.readUTF();
     }
-};
+}
 module.exports.DownloadPartMessage = DownloadPartMessage;
 module.exports.messages[1503] = DownloadPartMessage;
 
@@ -41113,7 +41113,7 @@ class DownloadSetSpeedRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.downloadSpeed + ") on element of DownloadSetSpeedRequestMessage.downloadSpeed.");
         }
     }
-};
+}
 module.exports.DownloadSetSpeedRequestMessage = DownloadSetSpeedRequestMessage;
 module.exports.messages[1512] = DownloadSetSpeedRequestMessage;
 
@@ -41130,7 +41130,7 @@ class GetPartInfoMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.id = buffer.readUTF();
     }
-};
+}
 module.exports.GetPartInfoMessage = GetPartInfoMessage;
 module.exports.messages[1506] = GetPartInfoMessage;
 
@@ -41147,7 +41147,7 @@ class GetPartsListMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.GetPartsListMessage = GetPartsListMessage;
 module.exports.messages[1501] = GetPartsListMessage;
 
@@ -41168,7 +41168,7 @@ class PartInfoMessage extends ProtocolMessage {
         this.part.deserialize(buffer);
         this.installationPercent = buffer.readFloat();
     }
-};
+}
 module.exports.PartInfoMessage = PartInfoMessage;
 module.exports.messages[1508] = PartInfoMessage;
 
@@ -41198,7 +41198,7 @@ class PartsListMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.PartsListMessage = PartsListMessage;
 module.exports.messages[1502] = PartsListMessage;
 
@@ -41228,9 +41228,9 @@ class MailStatusMessage extends ProtocolMessage {
         this.total = buffer.readVarUhShort();
         if (this.total < 0) {
             throw new Error("Forbidden value (" + this.total + ") on element of MailStatusMessage.total.");
-        };
+        }
     }
-};
+}
 module.exports.MailStatusMessage = MailStatusMessage;
 module.exports.messages[6275] = MailStatusMessage;
 
@@ -41268,7 +41268,7 @@ class NewMailMessage extends MailStatusMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.NewMailMessage = NewMailMessage;
 module.exports.messages[6292] = NewMailMessage;
 
@@ -41294,10 +41294,10 @@ class HaapiApiKeyMessage extends ProtocolMessage {
         this.keyType = buffer.readByte();
         if (this.keyType < 0) {
             throw new Error("Forbidden value (" + this.keyType + ") on element of HaapiApiKeyMessage.keyType.");
-        };
+        }
         this.token = buffer.readUTF();
     }
-};
+}
 module.exports.HaapiApiKeyMessage = HaapiApiKeyMessage;
 module.exports.messages[6649] = HaapiApiKeyMessage;
 
@@ -41317,7 +41317,7 @@ class HaapiApiKeyRequestMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.keyType + ") on element of HaapiApiKeyRequestMessage.keyType.");
         }
     }
-};
+}
 module.exports.HaapiApiKeyRequestMessage = HaapiApiKeyRequestMessage;
 module.exports.messages[6648] = HaapiApiKeyRequestMessage;
 
@@ -41337,7 +41337,7 @@ class KrosmasterAuthTokenErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of KrosmasterAuthTokenErrorMessage.reason.");
         }
     }
-};
+}
 module.exports.KrosmasterAuthTokenErrorMessage = KrosmasterAuthTokenErrorMessage;
 module.exports.messages[6345] = KrosmasterAuthTokenErrorMessage;
 
@@ -41354,7 +41354,7 @@ class KrosmasterAuthTokenMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.token = buffer.readUTF();
     }
-};
+}
 module.exports.KrosmasterAuthTokenMessage = KrosmasterAuthTokenMessage;
 module.exports.messages[6351] = KrosmasterAuthTokenMessage;
 
@@ -41371,7 +41371,7 @@ class KrosmasterAuthTokenRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.KrosmasterAuthTokenRequestMessage = KrosmasterAuthTokenRequestMessage;
 module.exports.messages[6346] = KrosmasterAuthTokenRequestMessage;
 
@@ -41391,7 +41391,7 @@ class KrosmasterInventoryErrorMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.reason + ") on element of KrosmasterInventoryErrorMessage.reason.");
         }
     }
-};
+}
 module.exports.KrosmasterInventoryErrorMessage = KrosmasterInventoryErrorMessage;
 module.exports.messages[6343] = KrosmasterInventoryErrorMessage;
 
@@ -41421,7 +41421,7 @@ class KrosmasterInventoryMessage extends ProtocolMessage {
             _loc3_++;
         }
     }
-};
+}
 module.exports.KrosmasterInventoryMessage = KrosmasterInventoryMessage;
 module.exports.messages[6350] = KrosmasterInventoryMessage;
 
@@ -41438,7 +41438,7 @@ class KrosmasterInventoryRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
 
     }
-};
+}
 module.exports.KrosmasterInventoryRequestMessage = KrosmasterInventoryRequestMessage;
 module.exports.messages[6344] = KrosmasterInventoryRequestMessage;
 
@@ -41455,7 +41455,7 @@ class KrosmasterPlayingStatusMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.playing = buffer.readBoolean();
     }
-};
+}
 module.exports.KrosmasterPlayingStatusMessage = KrosmasterPlayingStatusMessage;
 module.exports.messages[6347] = KrosmasterPlayingStatusMessage;
 
@@ -41478,7 +41478,7 @@ class KrosmasterTransferMessage extends ProtocolMessage {
             throw new Error("Forbidden value (" + this.failure + ") on element of KrosmasterTransferMessage.failure.");
         }
     }
-};
+}
 module.exports.KrosmasterTransferMessage = KrosmasterTransferMessage;
 module.exports.messages[6348] = KrosmasterTransferMessage;
 
@@ -41495,7 +41495,7 @@ class KrosmasterTransferRequestMessage extends ProtocolMessage {
     deserialize(buffer) {
         this.uid = buffer.readUTF();
     }
-};
+}
 module.exports.KrosmasterTransferRequestMessage = KrosmasterTransferRequestMessage;
 module.exports.messages[6349] = KrosmasterTransferRequestMessage;
 
@@ -41512,7 +41512,7 @@ class ClientYouAreDrunkMessage extends DebugInClientMessage {
     deserialize(buffer) {
         super.deserialize(buffer);
     }
-};
+}
 module.exports.ClientYouAreDrunkMessage = ClientYouAreDrunkMessage;
 module.exports.messages[6594] = ClientYouAreDrunkMessage;
 

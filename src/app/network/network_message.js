@@ -44,7 +44,7 @@ class NetworkMessage {
     }
 
     static subComputeStaticHeader(param1, param2) {
-        return param1 << BIT_RIGHT_SHIFT_LEN_PACKET_ID | param2;
+        return param1 << 2 | param2;
     }
 
     static getPacketLength(buffer, len) {
@@ -59,7 +59,7 @@ class NetworkMessage {
                 break;
 
             case 3:
-                packetLen = ((buffer.readByte()) << 16) + ((buffer.readByte()) << 8) + (buffer.readByte());
+                packetLen = ((buffer.readByte() & 255) << 16) + ((buffer.readByte() & 255) << 8) + (buffer.readByte() & 255);
                 break;
 
             default:
@@ -68,6 +68,5 @@ class NetworkMessage {
         }
         return packetLen;
     }
-};
-
+}
 module.exports = NetworkMessage;
