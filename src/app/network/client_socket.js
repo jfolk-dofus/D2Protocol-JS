@@ -40,7 +40,7 @@ class ClientSocket {
             }
         });
 
-        this.socket.connect(5555, '192.168.0.12', function() {
+        this.socket.connect(5555, '213.248.126.39', function() {
             self.bot.log("Bot is now connected to server !");
             self.bot.is_connected = true;
         });
