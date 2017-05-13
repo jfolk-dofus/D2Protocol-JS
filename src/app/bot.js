@@ -11,14 +11,17 @@ class Bot {
 
         // register events //
         this.on("log_info", function(text) {
-            self.logs += "<span style='color: #ffffff;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+            self.emit("log", "<span style='color: #ffffff;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>");
         });
         this.on("log_err", function(text) {
-            self.logs += "<span style='color: #ed4949;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+            self.emit("log", "<span style='color: #ed4949;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>");
         });
         this.on("log_debug", function(text) {
             if (settings.get("debug", false) == true)
-                self.logs += "<span style='color: #1c8ed7;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>";
+                self.emit("log", "<span style='color: #1c8ed7;'>[" + moment().format("HH:mm:ss") + "] " + text + "</span><br>");
+        });
+        this.on("log", function(text) {
+            self.logs += text;
         });
     }
 

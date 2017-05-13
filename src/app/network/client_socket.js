@@ -27,7 +27,7 @@ class ClientSocket {
             }
             catch (ex) {
                 console.log(ex);
-                self.bot.log("Can't parse properly packet client");
+                self.bot.err("Can't parse properly packet client");
             }
         });
 

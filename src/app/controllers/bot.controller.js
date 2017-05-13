@@ -7,4 +7,8 @@ Alpha.angular.controller('BotCtrl', function ($scope, $rootScope, BotManager, $s
     $scope.botDisconnect = function () {
         $scope.bot.disconnect();
     };
+    $scope.bot.on("log", function(text) {
+        $scope.bot = BotManager.bots[$stateParams.id];
+        $scope.$apply();
+    });
 });
