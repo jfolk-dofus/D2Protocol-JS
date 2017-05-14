@@ -2,11 +2,18 @@ var ClientSocket = require("./network/client_socket.js");
 var moment = require("moment");
 var settings = require('electron-settings');
 
+const BotState = {
+    DISCONNECTED: 0,
+    IN_AUTH : 1,
+    IN_GAME : 2
+};
+
 class Bot {
-    constructor() {
+    constructor(account) {
         this.events = new Events();
-        this.is_connected = false;
         this.logs = "";
+        this.state = BotState.DISCONNECTED;
+        this.account = account;
         let self = this;
 
         // register events //
@@ -41,19 +48,12 @@ class Bot {
         this.socket.send(packet);
     }
 
-    get account() {
-        return {
-            username: "test",
-            password: "test"
-        };
-    }
-
-    get connectionMode() {
+    get connection_mode() {
         return "FULL_SOCKET";
     }
 
     connect() {
-        switch (this.connectionMode) {
+        switch (this.connection_mode) {
             case "MITM":
                 break;
 
@@ -76,6 +76,10 @@ class Bot {
     emit(event_name, ...args) {
         this.events.emit(event_name, args);
     }
+    get is_connected() {
+        return this.state != BotState.DISCONNECTED;
+    }
 }
 
 module.exports = Bot;
+module.exports.BotState = BotState;

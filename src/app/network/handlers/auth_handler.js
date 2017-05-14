@@ -77,6 +77,10 @@ class AuthHandler {
     static handleLoginQueueStatusMessage(bot, packet) {
         bot.log("Vous êtes " + packet.position + " sur " + packet.total + " dans la file d'attente.");
     }
+
+    static handleIdentificationFailedMessage(bot, packet) {
+        bot.err("Connexion impossible, veuillez vérifier vos identifiants !");
+    }
 }
 
 module.exports = AuthHandler;

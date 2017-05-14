@@ -4,6 +4,7 @@ var NetworkMessage = require("./network_message");
 var arrayBufferToBuffer = require('arraybuffer-to-buffer');
 var Processor = require("./processor");
 var ByteArray = require("../io/bytearray.js");
+var BotState = require("../bot").BotState;
 
 class ClientSocket {
     constructor(bot) {
@@ -32,7 +33,7 @@ class ClientSocket {
         });
 
         this.socket.on('end', function(data){
-            self.bot.is_connected = false;
+            self.bot.state = BotState.DISCONNECTED;
             try {
                 self.bot.log("Alpha disconnected from server");
             }
@@ -43,7 +44,7 @@ class ClientSocket {
 
         this.socket.connect(5555, '213.248.126.39', function() {
             self.bot.log("Alpha is now connected to server !");
-            self.bot.is_connected = true;
+            self.bot.state = BotState.IN_AUTH;
         });
     }
 

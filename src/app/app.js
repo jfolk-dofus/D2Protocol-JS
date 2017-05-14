@@ -24,6 +24,11 @@ Alpha.angular.config(function ($stateProvider, $urlRouterProvider, $locationProv
             templateUrl: "app/views/app/settings.html",
             controller: "SettingsCtrl"
         })
+        .state('app.accounts', {
+            url: "/accounts",
+            templateUrl: "app/views/app/accounts.html",
+            controller: "AccountsCtrl"
+        })
         .state('app.bot', {
             url: "/bot/:id",
             templateUrl: "app/views/app/bot.html",
@@ -56,6 +61,7 @@ function () {
 
 require("./app/controllers/app.controller.js");
 require("./app/controllers/bot.controller.js");
+require("./app/controllers/accounts.controller.js");
 require("./app/controllers/settings.controller.js");
 require("./app/controllers/auth.controller.js");
 require("./app/controllers/dashboard.controller.js");
